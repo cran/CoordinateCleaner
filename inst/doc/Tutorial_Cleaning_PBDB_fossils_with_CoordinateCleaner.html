@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<title>Tutorial - Cleaning fossil data for the use in biogeography and palaeontology</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Tutorial - Cleaning fossil data for the use in biogeography and palaeontology</h1>
+
+
+
+<div id="background" class="section level1">
+<h1><span class="header-section-number">1</span> Background</h1>
+<p>The public availability of fossils for large-scale analyses is rapidly increasing, mainly due to increased databasing efforts and data aggregators such as the paleobiology database (www.paleobiodb.org) or Neotoma (www.neotomadb.org), among others. However, data quality is an issue, in particular, for old collections or collections with uncertain taxonomy and/or bad preservation. Similar problems as known from biological collection databases (See supplementary material S2) are relevant for fossils, but in addition fossils might be dated wrongly or with very low precision. This tutorial presents a pipeline to clean fossil data from the paleobiology database (or any other) before using it in biogeographic or evolutionary analyses. We focus on identifying overly imprecisely geo-referenced and/or dated records by combining automated cleaning using <em>CoordinateCleaner</em> with cleaning based on meta-data. The proposed steps are by no means exhaustive, and keep in mind that what is “good data” depends entirely on your downstream analyses! We wrote this tutorial (and the whole <em>CoordinateCleaner</em> package) to help you to identify potential problems quicker and more reproducibly to improve data quality in large datasets. For the sake of this tutorial we will mostly remove flagged records from the dataset, however, we recommend to double check them individually.</p>
+</div>
+<div id="install-coordinatecleaner" class="section level1">
+<h1><span class="header-section-number">2</span> Install <code>CoordinateCleaner</code></h1>
+<p>You can install the latest stable version of CoordinateCleaner (Currently 2.0-1) from CRAN using <code>install.packages(&quot;CoordinateCleaner&quot;)</code>. Alternatively you can install the latest development version from GitHub using the devtools package. We recommend the latter, to stay up-to-date. Also, make sure to have the latest R version installed. In this tutorial, relevant R-code is shown in grey boxes, the resulting output lines are marked by ##.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(devtools)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">install_github</span>(<span class="st">&quot;ropensci/CoordinateCleaner&quot;</span>)</a></code></pre></div>
+</div>
+<div id="load-required-libraries" class="section level1">
+<h1><span class="header-section-number">3</span> Load required libraries</h1>
+<p>As a first step we will load the R libraries required for the tutorial. You might need to install some of them using <code>install.packages</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">library</span>(CoordinateCleaner)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="kw">library</span>(countrycode)</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw">library</span>(paleobioDB)</a></code></pre></div>
+</div>
+<div id="load-test-dataset" class="section level1">
+<h1><span class="header-section-number">4</span> Load test dataset</h1>
+<p>For this tutorial we will use a dataset of vascular plant fossils from the last 65 million years, downloaded from the paleobiology database using the plaeobioDB package. For the tutorial we’ll limit the data to maximum 5,000 records, to keep the downloading time reasonable. If you obtained your data from the web mask of the paleobiology database, or use an entirely different database, you will have to adapt the column names in the script.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co">#load data</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">dat &lt;-<span class="st"> </span>paleobioDB<span class="op">::</span><span class="kw">pbdb_occurrences</span>(<span class="dt">base_name =</span> <span class="st">&quot;Magnoliopsida&quot;</span>, <span class="dt">vocab =</span> <span class="st">&quot;pbdb&quot;</span>, <span class="dt">limit =</span> <span class="dv">5000</span>,</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">                        <span class="dt">show =</span> <span class="kw">c</span>(<span class="st">&quot;coords&quot;</span>, <span class="st">&quot;phylo&quot;</span>, <span class="st">&quot;attr&quot;</span>, <span class="st">&quot;loc&quot;</span>, <span class="st">&quot;time&quot;</span>, <span class="st">&quot;rem&quot;</span>))</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw">rownames</span>(dat) &lt;-<span class="st"> </span><span class="ot">NULL</span></a></code></pre></div>
+<p>Alternatively, CoordinateCleaner includes an example dataset, downloaded from paleobioDB as specified above. We will use thisone for now.</p>
+</div>
+<div id="visualize-the-records-on-a-map" class="section level1">
+<h1><span class="header-section-number">5</span> Visualize the records on a map</h1>
+<p>As a first step we will visualize the records on a map, to get a general overview.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co">#plot data to get an overview</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">wm &lt;-<span class="st"> </span><span class="kw">borders</span>(<span class="st">&quot;world&quot;</span>, <span class="dt">colour=</span><span class="st">&quot;gray50&quot;</span>, <span class="dt">fill=</span><span class="st">&quot;gray50&quot;</span>)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw">ggplot</span>()<span class="op">+</span><span class="st"> </span><span class="kw">coord_fixed</span>()<span class="op">+</span><span class="st"> </span>wm <span class="op">+</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> dat, <span class="kw">aes</span>(<span class="dt">x =</span> lng, <span class="dt">y =</span> lat),</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">             <span class="dt">colour =</span> <span class="st">&quot;darkred&quot;</span>, <span class="dt">size =</span> <span class="fl">0.5</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">  </span><span class="kw">theme_bw</span>()</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="coordinatecleaner" class="section level1">
+<h1><span class="header-section-number">6</span> CoordinateCleaner</h1>
+<p>CoordianteCleaner includes a suite of automated tests to identify problems common to biological and palaebiological databases.</p>
+<div id="spatial-issues" class="section level2">
+<h2><span class="header-section-number">6.1</span> Spatial issues</h2>
+<p>We’ll first check coordinate validity to check if all coordinates are numeric and part of a lat/lon coordinate reference system using <code>cc_val</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">cl &lt;-<span class="st"> </span><span class="kw">cc_val</span>(dat, <span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lng&quot;</span>)</a></code></pre></div>
+<pre><code>## Testing coordinate validity</code></pre>
+<pre><code>## Removed 0 records.</code></pre>
+<p>Looks good, then we will test for coordinates with equal longitude and latitude. You can use the <code>test</code> argument to specify if coordinates should be flagged if their absolute values are identical (e.g. 56,-56).</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">cl &lt;-<span class="st"> </span><span class="kw">cc_equ</span>(cl, <span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lng&quot;</span>)</a></code></pre></div>
+<pre><code>## Testing equal lat/lon</code></pre>
+<pre><code>## Removed 0 records.</code></pre>
+<p>For the purpose of the tutorial, we will always exclude flagged records. If you want to further explore them, and you should if by any means possible, use the <code>value = &quot;flagged&quot;</code> argument, valid for all functions. In that case the output value will be a vector of logical values with the same length as <code>dat</code>, where TRUE = valid record, FALSE = flagged record. It is generally advisable to check flagged records whenever possible, to avoid data-loss and false flags.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">fl &lt;-<span class="st"> </span><span class="kw">cc_equ</span>(dat, <span class="dt">value =</span> <span class="st">&quot;flagged&quot;</span>, <span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lng&quot;</span>)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">## Testing equal lat/lon</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">## Flagged 0 records.</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co"># extract and check the flagged records</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">fl_rec &lt;-<span class="st"> </span>dat[<span class="op">!</span>fl,] </a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="kw">head</span>(fl_rec)</a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">##  [1] occurrence_no  record_type    collection_no  taxon_name    </span></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">##  [5] taxon_rank     taxon_no       matched_name   matched_rank  </span></a>
+<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">##  [9] matched_no     early_interval late_interval  early_age     </span></a>
+<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="co">## [13] late_age       reference_no   lng            lat           </span></a>
+<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">## [17] class          class_no       phylum         phylum_no     </span></a>
+<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">## [21] cc             state          geogscale      early_age.1   </span></a>
+<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">## [25] late_age.1     cx_int_no      early_int_no   late_int_no   </span></a>
+<a class="sourceLine" id="cb11-15" data-line-number="15"><span class="co">## [29] genus          genus_no       family         family_no     </span></a>
+<a class="sourceLine" id="cb11-16" data-line-number="16"><span class="co">## [33] order          order_no       county         reid_no       </span></a>
+<a class="sourceLine" id="cb11-17" data-line-number="17"><span class="co">## &lt;0 rows&gt; (or 0-length row.names)</span></a></code></pre></div>
+<p>We’ll also test if the records are identical, or in close vicinity to the centroids of political units. You can modify the buffer around each centroid using the <code>buffer</code> argument and the level of testing (country centroids, province centroids, or both) using the <code>test argument</code>. In case you have a list of geographic coordinates you consider problematic, for instance a list of cities you can provide them as custom gazetteer using the <code>ref</code> argument.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">fl &lt;-<span class="st"> </span><span class="kw">cc_cen</span>(cl, <span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lng&quot;</span>, <span class="dt">value =</span> <span class="st">&quot;flagged&quot;</span>)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">## Testing country centroids</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">## Flagged 6 records.</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4">fl_rec &lt;-<span class="st"> </span>cl[<span class="op">!</span>fl, ]</a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="kw">unique</span>(fl_rec<span class="op">$</span>cc)</a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">## [1] JP</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">## 22 Levels: NZ US CN IR KP AU UK FR JP DE CA RU KE ZM EG CD ZA TZ UG ... IT</span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8">cl &lt;-<span class="st"> </span>cl[fl, ]</a></code></pre></div>
+<p>Next we will test if the coordinates are within the country they are assigned to. This test is a bit more tricky, as it will also flag records, if the country name in the country column is not following ISO3 or if the records have been assigned during a different political landscape. For instance records from former Western and Eastern Germany. Here we need to convert the country annotation in column cc from ISO2 to ISO3; it is advisable to double check which records have be flagged, to avoid unnecessary data loss (see above).</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co">#adapt country code to ISO3, for country test</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">cs_ma &lt;-<span class="st"> &quot;GBR&quot;</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw">names</span>(cs_ma) &lt;-<span class="st"> &quot;UK&quot;</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">cl<span class="op">$</span>cc_iso3 &lt;-<span class="st"> </span><span class="kw">countrycode</span>(cl<span class="op">$</span>cc, <span class="dt">origin =</span> <span class="st">&quot;iso2c&quot;</span>, <span class="dt">destination =</span> <span class="st">&quot;iso3c&quot;</span>, <span class="dt">custom_match =</span> cs_ma)</a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6">cl &lt;-<span class="st"> </span><span class="kw">cc_coun</span>(cl, <span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lng&quot;</span>, <span class="dt">iso3 =</span> <span class="st">&quot;cc_iso3&quot;</span>)</a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">## Testing country identity</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">## Removed 299 records.</span></a></code></pre></div>
+<p>Next we will test if any of the records bear the coordinates of a hosting biodiversity institution or the GBIF headquarters, using the <code>institutions</code> database of <em>CoordinateCleaner</em>. As for the country centroid test you can change the buffer around the institutions with the <code>buffer</code> argument.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">cl &lt;-<span class="st"> </span><span class="kw">cc_inst</span>(cl, <span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lng&quot;</span>)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">## Testing biodiversity institutions</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">## Removed 0 records.</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">cl &lt;-<span class="st"> </span><span class="kw">cc_gbif</span>(cl, <span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lng&quot;</span>)</a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">## Testing GBIF headquarters, flagging records around Copenhagen</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">## Removed 0 records.</span></a></code></pre></div>
+<p>Finally, we will test for plain zero coordinates (e.g. 0/0).</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">cl &lt;-<span class="st"> </span><span class="kw">cc_zero</span>(cl, <span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lng&quot;</span>)</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="co">## Testing zero coordinates</span></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co">## Removed 0 records.</span></a></code></pre></div>
+</div>
+<div id="temporal-issues" class="section level2">
+<h2><span class="header-section-number">6.2</span> Temporal issues</h2>
+<p>The spatial cleaning above is mostly identical with steps from recent geographic records. Additionally  includes three functions to test the temporal dimension of fossils. Fossil ages are usually defined with a maximum and a minimum range, based on geological strata. First we will exclude records without dating information (NA) and then test for records with equal minimum and maximum range. Unless your data includes absolutely dated fossils, this will most likely be an data entry error.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">cl &lt;-<span class="st"> </span>cl[<span class="op">!</span><span class="kw">is.na</span>(cl<span class="op">$</span>late_age),]</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">cl &lt;-<span class="st"> </span>cl[<span class="op">!</span><span class="kw">is.na</span>(cl<span class="op">$</span>early_age),]</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">cl &lt;-<span class="st"> </span><span class="kw">cf_equal</span>(cl, <span class="dt">min_age =</span> <span class="st">&quot;late_age&quot;</span>, <span class="dt">max_age =</span> <span class="st">&quot;early_age&quot;</span>)</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">## Testing age validity</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">## Removed 0 records.</span></a></code></pre></div>
+<p>Next we will look at the age range (= max age - min age) of each record. The age range is the dating precision and can vary considerably, depending on the data available for dating. For many analyses, for instance in PyRate, very imprecisely dated records are not suitable. Lets first have a look at the age ranges in our test dataset.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">rang &lt;-<span class="st"> </span>cl<span class="op">$</span>early_age <span class="op">-</span><span class="st"> </span>cl<span class="op">$</span>late_age</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw">hist</span>(rang, <span class="dt">breaks =</span> <span class="dv">40</span>, <span class="dt">xlab =</span> <span class="st">&quot;Date range [max age - min age]&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;&quot;</span>)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Some individual records are dated with a precision of more than 60 million years!  offers two ways to flag records based on their age range (1) based on absolute age, e.g. age range &gt; 35 million years or (2) based on age range outlier detection in the entire dataset (e.g. if few records are much less precisely dated than the rest of all records) and (3) based on age range outlier detection on taxon level (e.g. all  records that are much less precisely dated than the other  records. The second and third approach can be combined and offer some more flexibility over the absolute age limit, but need some consideration on the desired sensitivity. Here, we will run all three variants for illustration, if you use your own data you should decide which one is more suitable depending on your downstream analyses. In the case of (2) and (3) you can tweak the test sensitivity using the <code>mltpl</code> argument.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="co"># Outlier dataset</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">cl &lt;-<span class="st"> </span><span class="kw">cf_range</span>(cl, <span class="dt">taxon =</span> <span class="st">&quot;&quot;</span>, <span class="dt">min_age =</span> <span class="st">&quot;late_age&quot;</span>, <span class="dt">max_age =</span> <span class="st">&quot;early_age&quot;</span>)</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="co">## Testing temporal range outliers on dataset level</span></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="co">## Removed 57 records.</span></a>
+<a class="sourceLine" id="cb18-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="co"># Outlier per taxon</span></a>
+<a class="sourceLine" id="cb18-7" data-line-number="7">cl &lt;-<span class="st"> </span><span class="kw">cf_range</span>(cl, <span class="dt">taxon =</span> <span class="st">&quot;taxon_name&quot;</span>, <span class="dt">min_age =</span> <span class="st">&quot;late_age&quot;</span>, <span class="dt">max_age =</span> <span class="st">&quot;early_age&quot;</span>)</a>
+<a class="sourceLine" id="cb18-8" data-line-number="8"><span class="co">## Testing temporal range outliers on taxon level</span></a>
+<a class="sourceLine" id="cb18-9" data-line-number="9"><span class="co">## Removed 78 records.</span></a>
+<a class="sourceLine" id="cb18-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb18-11" data-line-number="11"><span class="co"># Absolute age limit</span></a>
+<a class="sourceLine" id="cb18-12" data-line-number="12">cl &lt;-<span class="st"> </span><span class="kw">cf_range</span>(cl, <span class="dt">taxon =</span> <span class="st">&quot;taxon_name&quot;</span>, <span class="dt">min_age =</span> <span class="st">&quot;late_age&quot;</span>, </a>
+<a class="sourceLine" id="cb18-13" data-line-number="13">               <span class="dt">max_age =</span> <span class="st">&quot;early_age&quot;</span>, <span class="dt">method =</span> <span class="st">&quot;time&quot;</span>, <span class="dt">max_range =</span> <span class="dv">35</span>)</a>
+<a class="sourceLine" id="cb18-14" data-line-number="14"><span class="co">## Testing temporal range outliers on taxon level</span></a>
+<a class="sourceLine" id="cb18-15" data-line-number="15"><span class="co">## Removed 1 records.</span></a>
+<a class="sourceLine" id="cb18-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb18-17" data-line-number="17">rang &lt;-<span class="st"> </span>cl<span class="op">$</span>early_age <span class="op">-</span><span class="st"> </span>cl<span class="op">$</span>late_age</a>
+<a class="sourceLine" id="cb18-18" data-line-number="18"><span class="kw">hist</span>(rang, <span class="dt">breaks =</span> <span class="dv">40</span>, <span class="dt">xlab =</span> <span class="st">&quot;Date range [max age - min age]&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;&quot;</span>)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Finally we will test for outliers in space-time, that is records that are either very distant in space or in time from all other records (1) in the dataset (2) per taxon. The test is again based on quantile outlier detection and can be modified using various arguments. Here it is important to carefully consider the desired test sensitivity. See <code>?cf_outl</code> for help.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="co"># Outlier dataset</span></a>
+<a class="sourceLine" id="cb19-2" data-line-number="2">cl &lt;-<span class="st"> </span><span class="kw">cf_outl</span>(cl, <span class="dt">taxon =</span> <span class="st">&quot;&quot;</span>, <span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lng&quot;</span>,</a>
+<a class="sourceLine" id="cb19-3" data-line-number="3">              <span class="dt">min_age =</span> <span class="st">&quot;late_age&quot;</span>, <span class="dt">max_age =</span> <span class="st">&quot;early_age&quot;</span>)</a>
+<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="co">## Testing spatio-temporal outliers on dataset level</span></a>
+<a class="sourceLine" id="cb19-5" data-line-number="5"><span class="co">## Removed 244 records.</span></a>
+<a class="sourceLine" id="cb19-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb19-7" data-line-number="7"><span class="co"># Outlier taxon</span></a>
+<a class="sourceLine" id="cb19-8" data-line-number="8">cl &lt;-<span class="st"> </span><span class="kw">cf_outl</span>(cl, <span class="dt">taxon =</span> <span class="st">&quot;taxon_name&quot;</span>, <span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lng&quot;</span>,</a>
+<a class="sourceLine" id="cb19-9" data-line-number="9">              <span class="dt">min_age =</span> <span class="st">&quot;late_age&quot;</span>, <span class="dt">max_age =</span> <span class="st">&quot;early_age&quot;</span>)</a>
+<a class="sourceLine" id="cb19-10" data-line-number="10"><span class="co">## Testing spatio-temporal outliers on taxon level</span></a>
+<a class="sourceLine" id="cb19-11" data-line-number="11"><span class="co">## Removed 27 records.</span></a></code></pre></div>
+<p>Done! To check how many records have been flagged in total, you can compare the two datasets.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">nrow</span>(dat) <span class="op">-</span><span class="st"> </span><span class="kw">nrow</span>(cl)</a></code></pre></div>
+<pre><code>## [1] 731</code></pre>
+<p>All test combined have removed about 731 records (14.6%). If you want to identify all flagged records, to double check or correct them, take a look at the <code>clean_fossils</code> wrapper function below.</p>
+<p>So far so good, we have significantly refined the data for our needs. In section 6 we will have a look at the meta-data for further refinement, but before, note that there are two different ways to run <em>CoordinateCleaner</em>. You can connect all functions directly in a row using the magrittr pipe (%&gt;%) operator.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">cl &lt;-<span class="st"> </span>dat<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="st">  </span><span class="kw">cc_val</span>(<span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lng&quot;</span>)<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-3" data-line-number="3"><span class="st">  </span><span class="kw">cc_equ</span>(<span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lng&quot;</span>)<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="st">  </span><span class="kw">cc_cen</span>(<span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lng&quot;</span>)<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-5" data-line-number="5"><span class="st">  </span><span class="kw">cc_coun</span>(<span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lng&quot;</span>, <span class="dt">iso3 =</span> <span class="st">&quot;cc&quot;</span>)<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-6" data-line-number="6"><span class="st">  </span><span class="kw">cc_gbif</span>(<span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lng&quot;</span>)<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-7" data-line-number="7"><span class="st">  </span><span class="kw">cc_inst</span>(<span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lng&quot;</span>)<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-8" data-line-number="8"><span class="st">  </span><span class="kw">cc_zero</span>(<span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lng&quot;</span>)<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-9" data-line-number="9"><span class="st">  </span><span class="kw">cf_equal</span>(<span class="dt">min_age =</span> <span class="st">&quot;late_age&quot;</span>, <span class="dt">max_age =</span> <span class="st">&quot;early_age&quot;</span>)<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-10" data-line-number="10"><span class="st">  </span><span class="kw">cf_range</span>(<span class="dt">taxon =</span> <span class="st">&quot;taxon_name&quot;</span>,</a>
+<a class="sourceLine" id="cb22-11" data-line-number="11">           <span class="dt">min_age =</span> <span class="st">&quot;late_age&quot;</span>, <span class="dt">max_age =</span> <span class="st">&quot;early_age&quot;</span>)<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb22-12" data-line-number="12"><span class="st">  </span><span class="kw">cf_outl</span>(<span class="dt">taxon =</span> <span class="st">&quot;taxon_name&quot;</span>, </a>
+<a class="sourceLine" id="cb22-13" data-line-number="13">          <span class="dt">lat =</span> <span class="st">&quot;lat&quot;</span>, <span class="dt">lon =</span> <span class="st">&quot;lng&quot;</span>,</a>
+<a class="sourceLine" id="cb22-14" data-line-number="14">          <span class="dt">min_age =</span> <span class="st">&quot;late_age&quot;</span>, <span class="dt">max_age =</span> <span class="st">&quot;early_age&quot;</span>)</a></code></pre></div>
+<p>Alternatively you can use <code>clean_fossils</code>, a wrapper around all quality tests provided by <em>CoordinateCleaner</em> relevant for fossil data. See <code>?CleanCoordiantesFOS</code> for help.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="co">#adapt country code to ISO3, for country test</span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">cs_ma &lt;-<span class="st"> &quot;GBR&quot;</span></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="kw">names</span>(cs_ma) &lt;-<span class="st"> &quot;UK&quot;</span></a>
+<a class="sourceLine" id="cb23-4" data-line-number="4">dat<span class="op">$</span>cc &lt;-<span class="st"> </span><span class="kw">countrycode</span>(dat<span class="op">$</span>cc, <span class="dt">origin =</span> <span class="st">&quot;iso2c&quot;</span>, <span class="dt">destination =</span> <span class="st">&quot;iso3c&quot;</span>, <span class="dt">custom_match =</span> cs_ma)</a>
+<a class="sourceLine" id="cb23-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb23-6" data-line-number="6"><span class="co">#run automated testing</span></a>
+<a class="sourceLine" id="cb23-7" data-line-number="7">flags &lt;-<span class="st"> </span><span class="kw">clean_fossils</span>(<span class="dt">x =</span> dat, </a>
+<a class="sourceLine" id="cb23-8" data-line-number="8">                             <span class="dt">taxon =</span> <span class="st">&quot;taxon_name&quot;</span>,</a>
+<a class="sourceLine" id="cb23-9" data-line-number="9">                             <span class="dt">min_age =</span> <span class="st">&quot;late_age&quot;</span>, <span class="dt">max_age =</span> <span class="st">&quot;early_age&quot;</span>, </a>
+<a class="sourceLine" id="cb23-10" data-line-number="10">                             <span class="dt">value =</span> <span class="st">&quot;spatialvalid&quot;</span>)</a>
+<a class="sourceLine" id="cb23-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb23-12" data-line-number="12"><span class="kw">head</span>(flags)</a>
+<a class="sourceLine" id="cb23-13" data-line-number="13">cl &lt;-<span class="st"> </span>dat[flags<span class="op">$</span>.summary,] <span class="co">#the cleaned records</span></a>
+<a class="sourceLine" id="cb23-14" data-line-number="14">fl_rec &lt;-<span class="st"> </span>dat[<span class="op">!</span>flags<span class="op">$</span>.summary,] <span class="co"># the flagged records for verification</span></a></code></pre></div>
+</div>
+</div>
+<div id="improving-data-quality-using-meta-data" class="section level1">
+<h1><span class="header-section-number">7</span> Improving data quality using meta-data</h1>
+<p>Usually, at least some type of meta-data are provided with fossil occurrences, as is the case in the paleobiology database. We’ll now explore these and see if we can identify further problems.</p>
+<div id="basic-taxonomy" class="section level2">
+<h2><span class="header-section-number">7.1</span> Basic taxonomy</h2>
+<p>First we’ll take a short look at taxonomy. Fossil taxonomy is very complex and composite databases often have taxonomic issues that are extremely difficult to resolve. Here we will only do some very basic checks to test if: 1. all taxa in our dataset are plants, 2. they are at least identified to genus level.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="co">#1. This looks OK</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="kw">table</span>(cl<span class="op">$</span>phylum)</a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="co">## </span></a>
+<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="co">## Spermatophyta </span></a>
+<a class="sourceLine" id="cb24-5" data-line-number="5"><span class="co">##          4269</span></a>
+<a class="sourceLine" id="cb24-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb24-7" data-line-number="7"><span class="co">#2. Taxonomic level of identification</span></a>
+<a class="sourceLine" id="cb24-8" data-line-number="8"><span class="kw">table</span>(cl<span class="op">$</span>taxon_rank)</a>
+<a class="sourceLine" id="cb24-9" data-line-number="9"><span class="co">## </span></a>
+<a class="sourceLine" id="cb24-10" data-line-number="10"><span class="co">##  subclass   species     genus     class    family     order subfamily </span></a>
+<a class="sourceLine" id="cb24-11" data-line-number="11"><span class="co">##         7      3297       536       271       125        20         0</span></a></code></pre></div>
+<p>The required taxonomic level of course depends on the downstream analyses, but here we will exclude everything other than genus or species, which is a reasonable approach for most PyRate analyses.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">cl &lt;-<span class="st"> </span>cl <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(taxon_rank <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;species&quot;</span>, <span class="st">&quot;genus&quot;</span>))</a></code></pre></div>
+</div>
+<div id="spatial-coordinates" class="section level2">
+<h2><span class="header-section-number">7.2</span> Spatial coordinates</h2>
+<p>The Paleobiology database includes some information on the basis of the geographic data for many records.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">table</span>(cl<span class="op">$</span>geogscale)</a></code></pre></div>
+<pre><code>## 
+## small collection          outcrop       local area            basin 
+##             1953             1697               79                0</code></pre>
+<p>As expected most records are only roughly geo-referenced, but the precision is still relatively high for many records.</p>
+</div>
+<div id="time" class="section level2">
+<h2><span class="header-section-number">7.3</span> Time</h2>
+<p>We have checked for potentially problematic records in time and space above, but it is definitively advisable to check again.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="co">#minimum ages</span></a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="kw">tail</span>(<span class="kw">table</span>(cl<span class="op">$</span>late_age))</a>
+<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="co">## </span></a>
+<a class="sourceLine" id="cb28-4" data-line-number="4"><span class="co">##  63.3    66  70.6  93.5  93.9 100.5 </span></a>
+<a class="sourceLine" id="cb28-5" data-line-number="5"><span class="co">##    51   139     8     3     3    21</span></a>
+<a class="sourceLine" id="cb28-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb28-7" data-line-number="7"><span class="kw">ggplot</span>(cl)<span class="op">+</span></a>
+<a class="sourceLine" id="cb28-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">x =</span> late_age))</a>
+<a class="sourceLine" id="cb28-9" data-line-number="9"><span class="co">## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb29-2" data-line-number="2"><span class="co">#maximum ages</span></a>
+<a class="sourceLine" id="cb29-3" data-line-number="3"><span class="kw">tail</span>(<span class="kw">table</span>(cl<span class="op">$</span>early_age))</a>
+<a class="sourceLine" id="cb29-4" data-line-number="4"><span class="co">## </span></a>
+<a class="sourceLine" id="cb29-5" data-line-number="5"><span class="co">##  70.6  83.5  99.6 100.5 105.3   113 </span></a>
+<a class="sourceLine" id="cb29-6" data-line-number="6"><span class="co">##   127     9     3    11     3    21</span></a>
+<a class="sourceLine" id="cb29-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb29-8" data-line-number="8"><span class="kw">ggplot</span>(cl)<span class="op">+</span></a>
+<a class="sourceLine" id="cb29-9" data-line-number="9"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="kw">aes</span>(<span class="dt">x =</span> early_age))</a>
+<a class="sourceLine" id="cb29-10" data-line-number="10"><span class="co">## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></a></code></pre></div>
+<p><img src="data:image/png;base64,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oGJHKWTjDej5s8Utnu+g/jZicfS66gL0+8fhb58AmsZGLI5eV12A8h10PBuxOHpdde+gADqWjVgcva66AA15AwqgaWzE4uh11QXoxc4WD0kj2YjF0euqcwcN1jhhAXTTbADUoGJHKWTDLd6gYkcpZDPKDnrx+0/soO42YnH0uloPaHX6w38A1NtGLI5eV32Acov3txGLo9dVD6Cf2UH9bcTi6HXVBejyIenR9XfQy4NpVc33J9sn1wcADTinHbydXIuszQC0pePJdAHp8evVAUABdASfQEBnf/zztJp/OKpmb4+WBwAF0BF81gK6+LWPF6sb/C//rLfN2buTav7+cHmo//hprb5tN53aYx5nXbM6AM0daWN1B9BvzfP7xc6S0OO95r5+tr0gc3lYnjjOTxM7aJo449mM8++DLl8z1XvmZdcOCqCDAlC7zTCgx5NGe3wHvb8NgNptAm7xV6+ZLg/2rp7i93iKD7UBULtNJ6B3H5J4DxprA6B2m25AQ+UQtmOoAJomzng2AGoQgPrbeAP6/eOLsN89dggLoG5xxrPxBvTzkyrst+MdwgKoW5zxbEZ9zQSg0TYAarcBUEcbALXbdAHaeg8KoHE2AGq36QS0Or37HhRA42wA1G7TDWioHMICqFuc8WwA1CAA9bcBUIMA1N8GQA26GyfaHEBH8AFQAHWxAVCDANTfBkANAlB/GwA1CED9bQDUIAD1twFQgwDU3wZADQJQfxsANQhA/W0A1CAA9bcB0EindhwA9bAB0EindhwA9bAB0EindhwA9bAB0EindhwA9bAB0EindhwA9bAB0EindhwA9bAB0EindhwA9bAB0EindhwA9bAB0EindhwA9bAB0EindhwA9bCRAdRBQYCmqwszT9dLOvMHpo3fQYPr2EH9bWR2UIewABolLRsANdQBqL8NgBrqANTfBkANdQDqbwOghjoA9bcBUEMdgPrbAKihDkD9bQDUUAeg/jYAaqgDUH8bADXUDQIath6AjuADoNGAJjtJiywAHVQkMACqZAOghjoA9bcBUEMdgPrbAKihDkD9bQDUUAeg/jYAaqgDUH8bADXUAai/DYAa6gDU3wZADXUA6m8DoIY6APW3AVBDHYD62wCooQ5A/W0A1FAHoP42AGqoA1B/GwA11AGovw2AGuoA1N8GQA11AOpvA6CGOgD1twFQQx2A+tsA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" /><!-- --></p>
+<p>The minimum and maximum ages look unproblematic, but there are still some records with very large temporal uncertainties, and at least one case where the minimum and maximum age seem reversed. This might be informative in some cases, but for most analysis this might be problematic, so here we exclude all records with temporal uncertainty above 20.442 million years, which will retain 95% of the data. This is an arbitrary choice, and you’ll have to choose a more suitable value based on your planned analyses.</p>
+</div>
+<div id="additional-meta-data" class="section level2">
+<h2><span class="header-section-number">7.4</span> Additional meta-data</h2>
+<p>If you download data using the paleobiology database web portal, there are some additional fields you can check to generally gauge data precision, namely basis and precision of the geo-reference, the year of publications (old publications are more likely to be imprecise), preservation quality (bad preservation increases taxonomic uncertainty) and plant organ (also taxonomic uncertainty) and collection type. You might need to adapt the column names, and not all columns will be relevant for all taxa (e.g. “plant organ”).</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw">table</span>(cl<span class="op">$</span>latlng_basis)</a>
+<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="kw">table</span>(cl<span class="op">$</span>latlng_precision)</a>
+<a class="sourceLine" id="cb30-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb30-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb30-6" data-line-number="6"><span class="kw">table</span>(cl<span class="op">$</span>ref_pubyr)</a>
+<a class="sourceLine" id="cb30-7" data-line-number="7"><span class="kw">table</span>(cl<span class="op">$</span>collection_type)</a>
+<a class="sourceLine" id="cb30-8" data-line-number="8"><span class="kw">table</span>(cl<span class="op">$</span>preservation_quality)</a>
+<a class="sourceLine" id="cb30-9" data-line-number="9"><span class="kw">table</span>(cl<span class="op">$</span>plant_organ)</a>
+<a class="sourceLine" id="cb30-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb30-11" data-line-number="11">cl &lt;-<span class="st"> </span><span class="kw">filter</span>(cl, preservation_quality <span class="op">!=</span><span class="st"> &quot;very poor&quot;</span>)</a></code></pre></div>
+</div>
+</div>
+<div id="conclusions" class="section level1">
+<h1><span class="header-section-number">8</span> Conclusions</h1>
+<p>Through the various cleaning steps outline above, we have identified some potential major caveats and hopefully increased the quality of the dataset. We have excluded a significant fraction of all records (-75.66 %). Data quality is a delicate issue, especially for fossils from compound data bases and the usefulness of individual records will depend on your downstream analyses. We hope that you find this tutorial useful in exploring data downloaded from the Paleobiology database and to explore the quality of any fossil dataset.</p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAqAAAAJACAMAAABlpiR1AAAApVBMVEUAAAAAADoAAGYAOpAAZrYzMzM6AAA6ADo6AGY6kNtNTU1NTW5NTY5NbqtNjshmAABmtv9uTU1uTW5uTY5ubqtuq+R/f3+LAACOTU2OTW6OTY6OyP+QOgCQkGaQtpCQ2/+rbk2rbm6rbo6ryKur5P+2ZgC2///Ijk3I///bkDrb///kq27k///r6+v/tmb/yI7/25D/5Kv//7b//8j//9v//+T///+N2fSYAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAgAElEQVR4nO2dDXvctrFG3TZNb9U6SZsETKLc1u11a7m2miiK8f9/2tUuv/CNATAgh8v3PK1XWpKDF8MTkstdSa80AIJ5tXcAAFJAUCAaCApEA0GBaCAoEA0EBaKBoEA0EBSIBoIC0UBQIBoICkQDQYFoICgQDQQFooGgQDQQFIgGggLRQFAgGggKRANBgWggKBANBAWigaBANBAUiAaCAtFAUCAaCApEA0GBaCAoEA0EBaKBoEA0EBSIBoIC0UBQIBoICkQDQYFoICgQDQQFooGgQDQQFIgGggLRQFAgGggKRANBgWggKBANBAWigaBANBAUiAaCAtFAUCAaCApEA0GBaCAoEA0EBaKBoEA0EBSIBoIC0UBQIBoICkQDQYFoICgQDQQFooGgQDQQFIgGggLRQFAgGggKRANBgWggKBANBAWigaBANBAUiAaCAtFAUCAaCApEA0GBaCAoEA0EBaKBoEA0EBSIBoIC0UBQIBoICkQDQYFoICgQDQQFooGgQDQQFIgGggLRQFAgGggKRANBgWggKBANBAWigaBANBAUiAaCAtFAUCAaCApEA0GBaCAoEA0EBaKBoEA0EBSIBoIC0UBQIBoICkQDQYFoICgQDQQFooGgQDQQFIgGggLRQFAgGggKRANBgWggKBANBAWigaBANBAUiAaCAtFAUCAaCApEA0GBaCAoEA0EBaKBoEA0FYL+HoD+NAhavkmYR65CvLVkljpbLAh6sFJniwVBD1bqbLEg6MFKnS0WBD1YqbPFgqAHK3W2WBD0YKXOFguCHqzU2WJB0IOVOlssCHqwUmeLBUEPVupssSDowUqdLRYEpZdSPtungqBkDidoQLCUaY+5beieHsEEObXOJSjNsMky+sretklLj2CCnFonEVSV6VYvZ9DXDWa4DBUasawUAxC0pFYX6+j0maFVnzBowFxltgSCUmGcmxrPtgUuFZlHqFc2Q2/8ZRpepeQkShq0bgZBaXALmtqXERt4IM+wooQzxdA38dWiI+vKiwMfCBrEl2zcMySVqN4RKZhhYOPln5wyDCaURKcCQV2Ws+P4XWiHp2SiSUdGl72KD2fSlHM1nwn+8A1AUBP7Wt8+s+t1gYqYqDW7oOl9HJyhsVlu+2ytKkpHTgJBJ0wfJi31csWl1KM2mp6yiMHHSGXyDM2tkpsTak3V0puakx9L2fnrRR0bz8RxBQ0oMXXWFXdmGJIaFRqYInl2jr+KT21FqhWfXHzM9ERoNazs4x0BrhdcNySo6UfwmcEVNFCTUp4EwwwJGLVI46vo+sXTiFeReYp/3ItwY50F4bVqCpPZZPJ+2Mxa9srts3A6+0jdro7jHEGtrizfB2olXsIXjlJE9QwJqQK15pNDfoPr5QfPPNa83gWrxCMoQ5YrxLnF+zg/sSwz1ireA/RdSa/KfopX09VLKL37WIu1vTWEsaDHFA8qaLSPzqPd43jrS8dJwTNDGtZ9inB4rWaJqmZDmqP77OkFJfTP+EZNL6uJ3S4ZqLAcfYZElntD8ewb3OX1lkLQpU+p/rlP0DvuD1QCxwyJrDcveaKXzFGljsn0KWRWFyCoPS/q7punlWrQ43r8SKyabGpuG1od6znCDDOhrFrhNWtydyQ71dQMV7YXNDUjFVz9+n9Nu2Fp/ZxGetVom7LbkKqYpF/Fl5UzP/GqjXXNzStmwI07x0yHot3aWlD67FTsdU+qivfuXX7I2ozpGjZxQUtrOhd75urlsXeiqFtbCrpbP8yv/BTBoP5qifpZUu/FF9Wen1Oh/4i194VcyN3aUNDuc778bzqChgeb30P2nq6PSpt6SNCyMeYvaPIVFN8RUrc2PcWL6Eh8SVHOoomHBSWNM481fkHdgFp5Zwjd2vgaVEA/xi9iS0kpi6ed/jwoN/0q9yHZrRs6xRf0IbOcXmha29goOPWAoCXBC9Y9JolubSbo3j1YmqCcMNpZngmbn1dg8r6g1MSU9Y5PolvbHUGFNCG9NBmWOK/AOvmfSRLQoE0xmpDu1glO8cvA0RC0sNFp6exqhJ/qDCe7Ucw+ZLq1gaBOis2bYTVmDuOsE06dW8dfNbJG5OZ6OOTtkxFmD0Fz7wD1bYVa3xS0nnRWC6ROruKuH18Y/zGNsTbjjA9BupXnuQ/qDK2V6YIOrxgJW94ebWz1uD4VTMk038OQbtxZ3uoMBtDu8njDMsUI012+TAm6Q2d2hNK4kwhKyjA9F1zV/NxJ6VTHussXCUH3aE1n9Hz28J8nsa2gaqd9EI/jrRe/u56rRkOlBL25K9DYTOn92vE+aCC3kb9Dn9wIwRN3ZG3DqrKZ+sMmBVWxK2MOhoG5YAbtzXT8tqRfoj6wfPmW/ssJKzqVqT0/FViV5+c0rrVzL5Ka5zzEPIwuYEYvX9jTqWnZ/oJqa2qVbwTmexYZnbp2s6Br5Uf3KXfg1rkOF5avvIWt5SPEuhVeg4yAn0my59D2aUla/6aqicreyq2CGqUfrSe1e073/6stxxZ0GPwl3MS6FVuDzPaCRj5iMf3b98NodtFUZTdBF0G98TXz25zDoGwnt/HTO0kEVqGywxHU9WRKPz1N/oGIoarVds3tBNVrYV9QbY1aM60UQ/cDqDfZkKD+WiT2vwadoqtQIG/NSN+r2qlyNxJM2l8kLYWjR9DYTFsYnMvQ6q4l8Ocaeh1Y2bYdBQ1HT/z2zGD/G5pa0vlGQc2iMUGv3+ZDldHrnG7hTTcg6Pxtaed2ficpE8jZQiuXoUHQos63CBqvav1XWjkTEWj7yi0iqF6+oLPjJ+oJgfyNeFtKWi0TizjbsZhdlHdG+6JTgjY0b5cXSanMSUG135jefc/Gok7YDG88e0MEdqK3xNiXNLYUdLnpRw7kbs9qaNFJnknQYUI7g29yqTgO1LG4vxOtZ+2eEJtXI+iHu7u7Pz/o5+/uXn90N43gTYEWyCujNz/yUGJlmApd/lkFXQaYn9rG0K7D+DvRejbSmnTzagR9d3/599Obe/3hC3fTZrImbNRsp+lNr+LnImrW0RxgW0G7oVVAUKXyx6TMChWCfvrH28vD8w8P+unrB2fTZqoE7bJ/rf4yfFhkDT3PYXDf6Dku9mXl4zLj5q5VCPpyar+7u9dP33zUz99fXP39hT5/1iHE0pShg6BzeWMgvtzXf4MTODzjrIIzZoQm6NNf316Ooj+9ngU13W6GcqiammJ+aoe538Yo4zdMvxbZGYY9927o6cHciQzHz/pX8e/u1yOouSlvoChjO+IHzqYjqjnE/D2HoKGY9SllocezvLUTVbgNZdQLutc16BWV2bkt53yttXMPihwrG/pWcQ6X1z8+wtAxXSXo5dz+6Z8Pn958u8ur+JG0oG2viq9viU+jTE90OsXfCtp5QfTI5mftfdA/vdVF90ErA8VJN4zjNdM4ytx5rj/N0RzLi8lesZx5YsZOVOHplyPiE/UmJYIOq4ajkvMTXIIWxyIGX1NTctiP1rJHt+IeTPNapWR5dTRxa4IOTC/rK2NRky+pKUESyxpnycI8q3V+jN06tqAGw+znUG6ov251rPLg04CU3R9YQp9kN4x5LSd6CKqDvWoVVBtHAlUVKxk3GFw7j+HdH5z2JRZ9lp3wkjF0y+SmBGXodPnHVJvCmh+jiYeKVNL2b+TZBS9Xe7dsbljQoew6lCUWPa23JLRappT9G3k2Rivv8MnULQsIunacIRY97brEPIq6a5pbB2rtKKg7P+uiCIL22C0cschpjSU6ZWiG8S2b+jlXMQxusy7P8nXL4qYEHQbvsOl+H4ErFjGttcRaIzyxZPDCLdoZIGiesVGD07hKQfliJdJa4y2jKuvUXXw03OlGfWh+fN2yOKqgl56EBB0fqY0e12yNlS3g7l5jUHN4+2xPmsBmgloXI870/C5C0ORuGcoEZYkV2G+prMYyc63MxPwyG12DjrnWdPb0BggagrX7LLHipXIDmguKsj+Wb1KHtv/r8dMXd4vIcQXl2i2MsaLFrAEfvaedA3Bp/Lb5l421HEOXuNObd+XdonFgQZl2DHusdNrwuz+W3ErGh+h8jHlcv7r+A0GjcLadMVY0bTT19Wl/XTWdWZXyjR0K34VoZ802f6f0/DPTCoIG4e08W6zisLGVjW/czYetBfWjjTGmINzdCpc6o6AdYhWHDa5ubbnbO5or9jSGwfqCvVvhUkcTVAf6OBQdWvrEoiUtS9E40XbsMOvoPboVK3U4QQP3AIeC/dYtlhezOYi/zbDTSd46nE8HencCEHSl4QVvrCBHLO284V4iQCha9ST58MNEJw9BTdobbpdjilWe0F6XZ5KcOHESE4agJu3t7hKrKqH3plPl5LpgT6lbtxKljimovjavqd1dYln5bgF7Tr26lSp1UEG1ogtKuIBii2XEuw3MOXXrVqrUEQVV+vp2W66zRodV9hKKIZaRTncUZtOf6uzerWypowo6feCroLNl/a6JpeY32Lsqs5OgueZBUJupf9m+2ht0jTUlimViYtsfOzZnx9staqmjCqqn/mXa6m/QORbf4TNWacOf6tygW9lShxV0PaUSG1vc9rpYnHrEteEbJZ1gnVVwrs3dCnIrgl73UnBXJVbPvRhtjcWgxTDMs0iLw3ExMY+VGGYaq0u3CKVaBGX+dfnlXLoYes0QXX36awadI3FJEy02DcQw2pASlP8vIlRw5COovrZRe42Nr309V8XXaI/VbIw9j9iC4ERZx1Zzo/xx+LpFKXVoQSfp3F2T3mLeqEcsbkWyBfuNruf/oolTh6Bh6IKuS/odQVkVCU0ttEqX4TX92FndLVKpmxDU2TXB1aylpN7vL6iilOwyvtlbGjcl6PKp10CgyoKxXRZYPgUIrGaz3acAU6IQVuEOsFYrmPtNCart60D2H/5xnx+/XJ+g9V6CoPlbSUURCBmLJ13dLVqp/U7xay8Y5hZpst/0gh0hQ9BM0UCG2BaZjKH/agldqu8WrdSO16BLz9gFVfbTxmr2mumaAq5B88c8eors0lg5GhA0W8zfG+6uMY4Iif07I+QImixLjpFfHKh39lfxanpsuQ+6fuV0PLITlXNQCu2X+lgJlWpJV6WmyIXUoQNodAB7rfHhFgWd4ZkbbSeOTyyLjEeOWAmVqkmUJafIx9SB42ViCHOt8QGCEijajdYrgNBqFb/drsA7MtG69D7klkeqpQdxgKAkgp0ntdlfiSho4MqWlVhZehdyy2P1MqPMa40PEJRaK7qb01QKet10rdEFv3J2LsmVr08Gh/GrkGcPQQtqqes/ZTvVv+dHjZW7g9OMXzkfKb9mcBx3Bcr0xwcIWlyreKdWxVLd/fTu1pNCZdcNDeOtQGnA+ABBy2sl2+9RKahdohNGZfKlcW7WgVHCK2RGmh4haFWtaPd9LhakShHgtTIENVZi3vH3PCNFMgNNX0DQ2lqJHWU96a0hTVAzVt6bqF3FgqZHmoGg1bVo3fdWECboGot05ywulymonTk6G8rcIWhDLa/JTu+nu+HtsbqoaQWlCKN0UlAjq04KSh3vSrRbpK3jpU4jqHK/jzjQFItJxhwFUQIL1hUejRUDB1AeQcs5vaDE3b73L26IU5AjvYKxZmAxpcoCBG2pNbV5ajZxv+/8q2/iFMXwFxhrrKv6m5tV4kUWIGhbrYo9L1VQeo7kq/21lns/QxsvwshDQtDGWuX7/rCCTq/55pOFt9gIGi1hT4YwbQjaXOva6YKd3/IrozpSFMud0/jkujC6nT2VwMYuj4mX64pwX8wqZXAiQUdy+58jVhcxZ/gEDS+dFkyPWkVXsrHeYw6VJNQIlDqfoCR7WmOxW2lEKxU0+LQRMxZfG3eaCCMlY1EKREqdTlCqB42xAvXog08MQygY248YRl8BeaEpJUNv4VWmO7egVElaYy272JKqWVDGn4HV06+7Dwa3F7jrBNjyRdIvX351efjvb/+drNMgqIoHaoTrCMpwqFKBVCp1H5YgKGWGFJ+mGRoeOjeWnHfe8mPelqCJQL1rbSdoLBU5QSATZYakA95Uby6qtHsVYpUjFCScuvJFAqV8Qd+/mvksXeeQghbY0EvQekVJMyTh1B2P65FPjowXKjpj2HaCLkfQAM/f3b3+6G5ah4oEaoRRUJUpVZ8qOerwQioPT7cC87TvErur5wpuKWiUT2/u9Ycv3E3rUJFAjWRqlfip0qUqU2UvQhdBB9tT4gyp+KX92Tv/UKcYG5EaLS/oz59fT/HeNejzDw/66esHZ9NmthO0yE/VK1V61GFwv+gkqHZKJ/pAaMaWgv764x9//fGrwIn+6ZuP+vn7t5fNLuz9ByByKPevVJT52eVvXOT/NscQPMF3iWIXdwe8/jsu7RciS+wa9F9/1P/93X8cQX96PQtqut1M15/q1O4ThbCnqkqhIrVacA+h7oDjMXZetH5wRAWrJT9RP21C7CbpRdL7zwK3mdYjqLlpM1sJWmWG4nC05BSfi8An6PKHmEaBnAGtoe0r54Cj6XseynlMk78G/dfVzvfeEfTg16AVYrh2sKRqS8AoqDWCO6AbYfngiBtp3HrTj9u9XITqf736zd/dLT+9+bbiVXx2D0sXdN4/bKloQw7LxSh5hoV4U1y/1sbISpsneW2uNS5eFvHQ8F583X1QVRKokfSZphG2VKTRhlnQghmW4c7Omuk6Nqklj00NspDzYRE1PhzhCBpSpSFVw6i851JnCDVl09aS8TFyB9eqxRVrxRP0ly+XtzoZ3otX+kZO8UFXGlLVjznXqs3ilorOy3gVbzwZSD7Vqm9PKNbMmT5u16RmzJfKVPUDch9BdWRSKrRILcfYcFIWR6UIquYvzihoQZiCGdbFMkcxRgu8hbS8WIwmZb/ncaYjaIEUBcJUpqoer8P9nHmgabB5RHfkad1A+lXMygYFY105laAFVtCFqU1VOx7hE6+lsSJDmnXUXFgFtrBqFYyfiXXlXILSraAL445ATVU7YKc74s6A87DLiyLLvEBE56dauGJtIKjKruHexi5OEq/lUugiwZf6VJXj9fscdTKRNneM/fT14VFZy1r24uZHUJVZ7r3PUhwlWsujSEWKL9WpagfsKKifLHkXaloyPirvCMsTS+QpXjHWcks3w5WqdsT+gq75dPruu1rXdHJCUHItr/YOfrad4vu9F79eNwYXj9ed4WX2ZqHOzC/3G2Jd2F1Qte3PJLUKypiqaFCVrsUYywnp5B2/WJ6xaxn9UdOmxxdUbyxom6GcqYoGXaVg+qG5aKzoFl4XlCuo9TLKGqkICLq1n43XoEqvF3VcPw19rUYppUKB1yeWpdRYKrvGhoIq498E2wraYihjquJhLU95KGu814YqQQlsfR8029LDCMqZKjnQMETG3UXQcVA/EFFQFV1CidVPUBX8MsTGglYbypqqStDGGIRYAaKdsMLFalUEPvk1aMMhlDNVzbiNKSixSEFDcRKCqsgiUixBgpofimmtlaFKz4ps8xZNnwddrkFrU0SpFVRZSzK1yhMLE1Qtgja+DX+l4LKqHMZUxcMypCDEKoi5LMvVCtzCd59JxOolKL2PavNT/DhsOZypiofliJGPVRBzXZarpfyS9Fj9BE2HsNe1vitPYlAge4EjrWbUC+pvsOk7SfSMKUGVW7IgVrdTvLIekthzG7dgfVMxAtlMVxaGVMVDLk9tKWhByPTP2sS+ycfqJKiyzVThtUKBGjmKoLTBQ+tvKGhJZ1If6nUPoSWx9n+RtJ+g9B3g2sKRqnDE5TmjVkukWKySfGbUdK36WL1P8RQgKGHAkAmtL5hiH1gubIwbywqoyu8ebngEjQRznvY/DxrejEI/QasjxVIVjbg+97g805IoHqugLcP6hldyii2xOp/iFaXQMY6g7KmKhlyf6n0NSu+I9cv047KbH4gqj3Xma1D6rlCNh6twqpIx16ckCUroUEXrIOgEfVf0udgrGXR9RpKglqF9YkHQzm4mUh1dUNohtDHWIQRVjLXMshvpeShBC/zcpFstgu7xRx84oXR8zwCBdbvGIYXaul2HOIJ2qkVoeN9URSPnPzbEEqvJzw6xIOgGfrIImqnFFQuC+jS1PHfTP7UlBC0MtU3DbkvQ+lr7C5qKUFyLKxYE9YCgJSN3/zQTBHURK+gGqc4gaPhZYiwIuoGfxYLW1eKKxS1oU6zzCrpRtzOpbkvQDrEgaJRtPrpevJ8hKJUbF3QDEyIxqmtxxYKgNiKvQTcx4YVh8EeurcUVK67eFn5C0JFsr3cStKEWV6xUIAjatVboB81FCdpUqxTSNWh6aQc/Ty2oQfZQsI2g2hu3oVYhGUGjS8O9y42WXSEY67SCZv3cStCmn3lsI3mKj24V+6HP3GjkYywEvZCWkznWXp/X6lOqzk+6oRBUk66k9jehd63aUuOPuhcLSjUUgtI+RiTAhM61WkpVCkpZDYLSXooKMaFjLU5BSbVoLkNQCMpQymlagaBFsU4qaMTQXrFuUdALxu9dItSiXgxAUNo74JJM6FOrvdTYNuIbwzQ9IegFgp+yTOhSi0NQpYmCzi/980UhKI6gbKWW5hEEJR5AIajOvd1cVIrC7QqqqYLS/YSgxJt4wkzoUGtzQWklISgEZSxFEpR++NQbCjoMtEK7C9pSijHV5rXYBM3UKji9a7cUBIWgnWulu5wrdcpTPMnP45mwZ6l4rWI/Iaim6Hk8E3Ytlf5saZGfEJR0/BRsQu/fCslbq9hPCEp5Cc8bq7rULbx/UPzf0+kFxTUof6lusYiCfri7u/vzg37+7u71R3dT3kAb1DrQEbRvrSPEIgr67v7y76c39/rDF+6mvIE2qHX0a9A4La9GGtlX0E//eHt5eP7hQT99/eBsyhtog1o0PyFoEfsK+nJqv7u710/ffNTP319c/f0F/j/psBGmoHtnuXVaG0wT9Omvby9H0Z9ez4Kabjez44sk+2n7dwsc8Ai6X6n4fdDGUnlB393djZed7+7XI6i5aTMyBPWeOJgJ+5ba+0XShXf3N3INal6EOk92inUEEzrWKrwTWiHo5dz+6Z8Pn958ewuv4qPn+JpSJDaeYdUHLxvZ/z7on97qG7kPqiPH0LpSFI5ggpxaeCdJkwz1SxXexSlPtXGtbrEUX6mzCkq4GxosFVyTMdWmtSAojd12X+kRtJqzCcpY6tSCHrHU2WJB0IOVOlssCHqwUmeLBUFbSt3SDUc5tSDokUudLRYEPVips8WCoJlSLD+hJnqG4mpB0DTzrVEIulMtCJpm/ljoyUyQUwuChsHnQYXUgqAB1HxmXyU9mQlyakHQIOufoGwu5SFjhj1LQdCutYIfbDqZCXJqQVCXxU3rx+bOYQLXL3qCoN1qKf/HkWpLxWCfoare3PpTZdfLmujiIiBor1rRTy0LFZTy0yr+RtZXyrziNmqF6zoLIyP7U+Rx/eSCGif31lIp2Eoph8rNGElMsdZQCLqQ3M/CBCXJomo2ayUxRT8PAQhqYja5sVScxlLFtlRs147mesV1IkFVYs2lp8F9yxur7j8b48siTXTVhnywduu2BY3gvUIItnUDQeM7s0mO+c9i7glXt84oqHIPneGWtscah7mWug6gptHN4fV8bhytCgUr86Jpc0Y0XsVX1oq3lC/WfIye/mt43MwbOYIaFDbvxgVV+ZXM3sXbWB1r271vIdLPKwX9u1lBzXYo8orRHla9KaX3VGTHobMUdPEmBfV3TuAXhyyvIUhNbHlTCjiUtPGAguYnmz985JZ7hUsEVYGYYEKrmxVUqdjr2nHS1szbG0mNRY8J3K4SYBOU5ZfsBymYf/kWmUp1gVkS3CKtKsg5gu57jR+NlWPHzOJp8mFChKAyG5kRdO/QB6DWB/ObvQRV6wWk1A4mBN0x8qGoc0OCoHt3ThGaF/mBiL1zH4rcLwmONn5htyPo3qw58hFFBT8epW7sKagRePd+Od8Go3rrbB32BiiWZHdB59RK77TD7ShqyRaOaqxiPwlSVNgxsfcpfom/PuzYu9CC9Ba7RD4elXbo/QU12LuJzn8hoVSCsh6Leiv2P8XPd5lE4WV9dGODMir8cBu/422m8V9RrOEAFzVybCqoE9T4ep+GJRAZ6jYoE2vjI+jezQFiIIq1haB7twKIZn9BKZqGAzUi57ctdCp1tlg7vhcfDtSIzN13+zO8NUEtjtAnMaXOFguCHqzU2WJB0IOVOlssCHqwUmeLBUEPVupssSDowUqdLRYEPVips8WCoAcrdbZYEPRgpc4WC4IerNTZYkHQg5U6W6wWQQHoT72gImE7rLMiM9WhYkHQnshMdahYELQnMlMdKtatCApuFAgKRANBgWggKBANBAWiOb6gT18/aP383d3rj8uDDESFuSKyVU9/ubu7j8c6vKA/3f35QX96c68/fDE/yEBUmCsiW/X8/Vv99Ne30VhHF/Tdn/7v5bDw/MPD5fAwPeydaURUmAsyW/XTRcd399FYRxd0PG89ffPx8p/i9LB3ohFRYUaktmrN48e6DUF/en2d1/Swd6IRUWFGhLbq05tv47EOLOi7u7vL6UHqYUFUmBGZrXr+7lsdj3VgQSeeBF5YXRAVZkRkq57+8vIaPh7rNgS9nCSurwG/lfHS9IKoMCMSWzX6GY91G4KKu7l3QVSYKxJb9eHuwv3t3gcFtw0EBaKBoEA0EBSIBoIC0UBQIBoICkQDQYFoIGgffv7D3/eOcBtA0D5AUCYgaB8gKBMQtA8XQX/98dWrzy5f/u3zV6++0vqXL1/95m//8++9ox0LCNqHF0F//fEzffn/z5//7j/6/W///cuXf3xx9LcQtAgI2ocXQf97cfHln58//2r9/j0ELQOC9uEi5MuB8/J4vRx9+ef99Xuc4suAoH2AoExA0D5cBP3N38dT/CTofMrfO9qxgKB9MF8kTYLiRVINELQP1m2mUdDrbab/haBlQNBtuV6YAjoQdDMu16SXUz4oAYJux4zuAnIAAAHdSURBVPtX11M+KAGCAtFAUCAaCApEA0GBaCAoEA0EBaKBoEA0EBSIBoIC0UBQIBoICkQDQYFoICgQDQQFooGgQDQQFIgGggLRQFAgGggKRANBgWggKBANBAWigaBANBAUiAaCAtFAUCAaCApEA0GBaCAoEA0EBaKBoEA0EBSIBoIC0UBQIBoICkQDQYFoICgQDQQFooGgQDQQFIgGggLRQFAgGggKRANBgWggKBANBAWigaBANBAUiAaCAtFAUCAaCApEA0GBaCAoEA0EBaKBoEA0EBSIBoIC0UBQIBoICkQDQYFoICgQDQQFooGgQDQQFIgGggLRQFAgGggKRANBgWggKBANBAWigaBANBAUiAaCAtFAUCAaCApEA0GBaCAoEA0EBaKBoEA0EBSIBoIC0UBQIBoICkQDQYFoICgQDQQFooGgQDQQFIgGggLRQFAgGggKRANBgWggKBANBAWigaBANBAUiAaCAtFAUCAaCApEA0GBaCAoEA0EBaKBoEA0EBSIBoIC0UBQIBoICkQDQYFoICgQDQQFooGgQDQQFIgGggLRQFAgGggKRANBgWggKBANBAWigaBANBAUiAaCAtFAUCAaCApEA0GBaCAoEA0EBaKBoEA0EBSI5v8B6nhwRvz2w4AAAAAASUVORK5CYII=" /><!-- --><img src="data:image/png;base64,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" /><!-- --></p>
+<p>#Writing the result to disk in PyRate format</p>
+<p>If you want to use fossil data to estimate speciation and extinction rates, their correlation with environmental factors or to do biogeography, <a href="https://github.com/dsilvestro/PyRate">PyRate</a> might be useful for you. You can use the <code>write_pyrate</code> function of <em>CoordinateCleaner</em> to write ready-to-use PyRate input files from your now cleaned dataset to disk. To to so, you additionally need an assessment of which species are extinct and which are extant today, which you can provide via the <code>status</code> argument of <code>write_pyrate</code>. If you want to specify a path were to save the file, use the <code>path</code> argument instead of <code>fname</code>.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="co"># replace  blanks in taxon names</span></a>
+<a class="sourceLine" id="cb31-2" data-line-number="2">cl<span class="op">$</span>taxon_name &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;[[:blank:]]{1,}&quot;</span>,<span class="st">&quot;_&quot;</span>, cl<span class="op">$</span>taxon_name)</a>
+<a class="sourceLine" id="cb31-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb31-4" data-line-number="4"><span class="co">#simulated current status, soley for demonstration purposes, replace with your own data</span></a>
+<a class="sourceLine" id="cb31-5" data-line-number="5">mock_status &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">taxon_name =</span> <span class="kw">unique</span>(cl<span class="op">$</span>taxon_name),</a>
+<a class="sourceLine" id="cb31-6" data-line-number="6">                          <span class="dt">status =</span> <span class="kw">sample</span>(<span class="kw">c</span>(<span class="st">&quot;extinct&quot;</span>, <span class="st">&quot;extant&quot;</span>), </a>
+<a class="sourceLine" id="cb31-7" data-line-number="7">                                          <span class="dt">size =</span> <span class="kw">length</span>(<span class="kw">unique</span>(cl<span class="op">$</span>taxon_name)), </a>
+<a class="sourceLine" id="cb31-8" data-line-number="8">                                          <span class="dt">replace =</span> <span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb31-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb31-10" data-line-number="10"><span class="co">#add current status to fossils</span></a>
+<a class="sourceLine" id="cb31-11" data-line-number="11">cl2 &lt;-<span class="st"> </span><span class="kw">inner_join</span>(cl, mock_status, <span class="dt">by =</span> <span class="st">&quot;taxon_name&quot;</span>)</a>
+<a class="sourceLine" id="cb31-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb31-13" data-line-number="13"><span class="co">#Write PyRate input to disk</span></a>
+<a class="sourceLine" id="cb31-14" data-line-number="14"><span class="kw">write_pyrate</span>(cl, <span class="dt">fname =</span> <span class="st">&quot;paleobioDB_angiosperms&quot;</span>, <span class="dt">status =</span> cl2<span class="op">$</span>status,</a>
+<a class="sourceLine" id="cb31-15" data-line-number="15">            <span class="dt">taxon =</span> <span class="st">&quot;taxon_name&quot;</span>, <span class="dt">min_age =</span> <span class="st">&quot;late_age&quot;</span>, <span class="dt">max_age =</span> <span class="st">&quot;early_age&quot;</span>)</a></code></pre></div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
