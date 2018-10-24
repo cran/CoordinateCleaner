@@ -2,7 +2,7 @@ Package: CoordinateCleaner
 Type: Package
 Title: Automated Cleaning of Occurrence Records from Biological
         Collections
-Version: 2.0-2
+Version: 2.0-3
 Authors@R: c(person(given = "Alexander", family = "Zizka", email = "zizka.alexander@gmail.com",
                     role = c("aut", "cre")),
              person(given = "Daniele", family = "Silvestro", role = "ctb"),
@@ -35,7 +35,7 @@ Suggests: countrycode, covr, knitr, maps, paleobioDB, rgbif, rmarkdown,
         testthat
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2018-10-18 14:07:54 UTC; alexander.zizka
+Packaged: 2018-10-24 11:59:26 UTC; alexander.zizka
 Author: Alexander Zizka [aut, cre],
   Daniele Silvestro [ctb],
   Tobias Andermann [ctb],
@@ -56,4 +56,4 @@ Author: Alexander Zizka [aut, cre],
     ropensci, see <https://github.com/ropensci/onboarding/issues/210>)
 Maintainer: Alexander Zizka <zizka.alexander@gmail.com>
 Repository: CRAN
-Date/Publication: 2018-10-18 15:20:10 UTC
+Date/Publication: 2018-10-24 13:50:07 UTC

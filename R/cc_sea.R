@@ -14,10 +14,10 @@
 #' 
 #' @param ref a SpatialPolygonsDataFrame. Providing the geographic gazetteer.
 #' Can be any SpatialPolygonsDataFrame, but the structure must be identical to
-#' rnaturalearth::ne_download(scale = 10, type = 'land', category = 'physical').  
-#' Default = rnaturalearth::ne_download(scale = 50, type = 'land', category = 'physical')
+#' rnaturalearth::ne_download(scale = 110, type = 'land', category = 'physical').  
+#' Default = rnaturalearth::ne_download(scale = 110, type = 'land', category = 'physical')
 #' @param scale the scale of the default reference, as downloaded from natural earth. 
-#' Must be one of 10, 50, 110. Higher numbers equal higher detail. Default = 50.
+#' Must be one of 10, 50, 110. Higher numbers equal higher detail. Default = 110.
 #' @param speedup logical. Using heuristic to speed up the analysis for large data sets
 #'  with many records per location.
 #' @inheritParams cc_cap
@@ -48,7 +48,7 @@ cc_sea <- function(x,
                    lon = "decimallongitude", 
                    lat = "decimallatitude", 
                    ref = NULL,
-                   scale = 50,
+                   scale = 110,
                    value = "clean",
                    speedup = TRUE, 
                    verbose = TRUE){
@@ -73,28 +73,34 @@ cc_sea <- function(x,
       stop("scale must be one of c(10,50,110)")
     }
     
-    path <- file.path(system.file(package = "CoordinateCleaner"), "sea.EXT")
-    file <- file.path(path, paste("ne_", scale, "m_land.shp", sep = ""))
+    # path <- file.path(system.file(package = "CoordinateCleaner"), "sea.EXT")
+    # file <- file.path(path, paste("ne_", scale, "m_land.shp", sep = ""))
+    # 
+    # #Download if file does not exist yet
+    # if(!file.exists(file)) {
+    #   ref <- rnaturalearth::ne_download(scale = scale, 
+    #                                     type = 'land', 
+    #                                     category = 'physical',
+    #                                     destdir = path,
+    #                                     load = FALSE)
+    # }
     
-    #Download if file does not exist yet
-    if(!file.exists(file)) {
-      ref <- rnaturalearth::ne_download(scale = scale, 
-                                        type = 'land', 
-                                        category = 'physical',
-                                        destdir = path,
-                                        load = FALSE)
-    }
-    
-    #load reference
-    ref <- rgdal::readOGR(path, 
-                          paste("ne_", scale, "m_land", sep = ""), 
-                          encoding = "UTF-8",
-                          stringsAsFactors = FALSE, 
-                          use_iconv = TRUE)
-    ref@data[ref@data == "-99" | 
-                     ref@data == "-099"] <- NA
-    
+    # #load reference
+    # ref <- rgdal::readOGR(path, 
+    #                       paste("ne_", scale, "m_land", sep = ""), 
+    #                       encoding = "UTF-8",
+    #                       stringsAsFactors = FALSE, 
+    #                       use_iconv = TRUE)
+    # ref@data[ref@data == "-99" | 
+    #                  ref@data == "-099"] <- NA
+    # 
     #Crop to the spatial extent of the points
+    
+      ref <- rnaturalearth::ne_download(scale = scale,
+                                        type = 'land',
+                                        category = 'physical',
+                                        load = TRUE)
+    
     ref <- raster::crop(ref, raster::extent(pts) + 1)
   } else {
     ref <- reproj(ref)
