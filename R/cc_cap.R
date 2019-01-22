@@ -12,13 +12,14 @@
 #' Default = \dQuote{decimallatitude}.
 #' @param species character string. The column with the species identity. Only
 #' required if verify = TRUE.
-#' @param buffer The buffer around each capital coordinate (the center of the
+#' @param buffer The buffer around each capital coordinate (the centre of the
 #' city), where records should be flagged as problematic. Units depend on geod.
-#' Default = 10 kilometers.
+#' Default = 10 kilometres.
 #' @param geod logical. If TRUE the radius around each capital is calculated
 #' based on a sphere, buffer is in meters and independent of latitude. If FALSE
 #' the radius is calculated assuming planar coordinates and varies slightly with latitude,
-#' in this case buffer is in degrees. Default = T.
+#' in this case buffer is in degrees. Default = TRUE. See https://seethedatablog.wordpress.com/ 
+#' for detail and credits.
 #' @param ref SpatialPointsDataFrame. Providing the geographic gazetteer. Can
 #' be any SpatialPointsDataFrame, but the structure must be identical to
 #' \code{\link{countryref}}.  Default = \code{\link{countryref}}.

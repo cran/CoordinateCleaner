@@ -43,7 +43,7 @@
 #' 
 #' @aliases CleanCoordinatesFOS
 #' 
-#' @param x data.frame. Containing fossil records, conaining taxon names, ages, 
+#' @param x data.frame. Containing fossil records, containing taxon names, ages, 
 #' and geographic coordinates..
 #' @param min_age character string. The column with the minimum age. Default
 #' = \dQuote{min_ma}.
@@ -149,7 +149,7 @@ clean_fossils <- function(x,
 
   ## Equal coordinates
   if ("equal" %in% tests) {
-    equ <- cc_equ(x,
+    out$equ <- cc_equ(x,
       lon = lon, lat = lat, verbose = verbose, value = "flagged",
       test = "absolute"
     )
@@ -216,7 +216,7 @@ clean_fossils <- function(x,
   if ("temprange" %in% tests) {
     # always over entire dataset
     test <- x
-    trg <- cf_range(
+    out$trg <- cf_range(
       x = test, taxon = "", min_age = min_age, max_age = max_age,
       lon = lon, lat = lat, method = outliers_method, 
       mltpl = outliers_threshold,

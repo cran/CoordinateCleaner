@@ -16,7 +16,7 @@ clean_fossils(x, lon = "lng", lat = "lat", min_age = "min_ma",
   value = "spatialvalid", verbose = TRUE, report = FALSE)
 }
 \arguments{
-\item{x}{data.frame. Containing fossil records, conaining taxon names, ages,
+\item{x}{data.frame. Containing fossil records, containing taxon names, ages,
 and geographic coordinates..}
 
 \item{lon}{character string. The column with the longitude coordinates.
@@ -39,8 +39,8 @@ specified taxon. Default = \dQuote{accepted_name}.}
 See details for all tests available. Default = c("centroids",
 "equal", "gbif", "institutions", "temprange", "spatiotemp", "agesequal", "zeros")}
 
-\item{countries}{a character string. A vector of the same length as rows in
-x, with country information for each record in ISO3 format.  If missing, the
+\item{countries}{a character string. The column with the country assignment of
+each record in three letter ISO code. Default = \dQuote{countrycode}. If missing, the
 countries test is skipped.}
 
 \item{centroids_rad}{numeric. The radius around capital coordinates in
@@ -52,7 +52,7 @@ meters. Default = 1000.}
 \sQuote{both}.}
 
 \item{inst_rad}{numeric. The radius around biodiversity institutions
-coordinates in degrees. Default = 0.001.}
+coordinates in metres. Default = 100.}
 
 \item{outliers_method}{The method used for outlier testing. See details.}
 

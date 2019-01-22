@@ -1,8 +1,38 @@
+CoordinateCleaner 2.0-7 (2019-01-22)
+=========================
+
+### MINOR IMPROVEMENTS
+  * added citation
+  * reduced testing time on CRAN
+  * improved documentation of the cc_outl function
+
+CoordinateCleaner 2.0-6 (2019-01-16)
+=========================
+
+### MINOR IMPROVEMENTS
+  * further url fixes
+
+CoordinateCleaner 2.0-5 (2019-01-15)
+=========================
+
+### MINOR IMPROVEMENTS
+  * fixed broken url to the CIA factbook
+  
+
+CoordinateCleaner 2.0-4 (2019-01-14)
+=========================
+
+### MINOR IMPROVEMENTS
+  * minor bugfix with cc_cap
+  * corrected duplicated vignette index entries 
+  * updated maintainer email
+  
+  
 CoordinateCleaner 2.0-3 (2018-10-22)
 =========================
 
 ### MINOR IMPROVEMENTS
-  * Removed convenience functionality to only download data from rnaturalearth at first use, to comply with CRAN guidelines
+  * removed convenience functionality to only download data from rnaturalearth at first use, to comply with CRAN guidelines
 
 
 CoordinateCleaner 2.0-2 (2018-10-12)
@@ -20,7 +50,7 @@ CoordinateCleaner 2.0-2 (2018-10-12)
   
 ### MINOR IMPROVEMENTS
 
-  * reduced packages size, by switching to data download from rnauralearth for urbanareas and landmass
+  * reduced packages size, by switching to data download from rnaturalearth for urbanareas and landmass
   * fixed issue with names of plot.spatialvalid
   * grouped functions on documentation webpage
   * fixed broken links in the help pages
@@ -52,13 +82,13 @@ CoordinateCleaner 1.2-1 (2018-06-08)
   * Simplified internal code structure of wrapper functions
   
 ### MINOR IMPROVEMENTS
-  * adapted package to Ropensci reviews
+  * adapted package to rOpenSci reviews
   
 ### DEPRECATED AND DEFUNCT
   * CleanCoordinates deprecated, replaced by clean_coordinates
   * CleanCoordinatesDS deprecated, replaced by clean_dataset
   * CleanCoordinatesFOS deprecated, replaced by clean_fossils
-  * WritePyrate deprecated, replaced by writ_pyrate
+  * WritePyrate deprecated, replaced by write_pyrate
 
 CoordinateCleaner 1.1-1 (2018-05-15)
 =========================
@@ -76,7 +106,7 @@ CoordinateCleaner 1.1-0 (2018-04-08)
 
 ### MINOR IMPROVEMENTS
 
-  * Adaption of code to ROpensci guidelines
+  * Adaption of code to rOpenSci guidelines
 
 ### BUG FIXES
 

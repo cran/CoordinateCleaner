@@ -8,7 +8,40 @@ knitr::opts_chunk$set(fig.width = 7)
 #  
 #  install_github("ropensci/CoordinateCleaner")
 
-## ---- echo = T, eval = TRUE, warning = F, message = F--------------------
+## ---- echo = F, eval = !nzchar(Sys.getenv("vignette_local")), warning = F, message = F----
+#  library(dplyr)
+#  library(ggplot2)
+#  library(rgbif)
+#  library(sp)
+#  library(countrycode)
+#  library(CoordinateCleaner)
+#  
+#  #Simulate data for CRAN to speed up vignette testing
+#  
+#  #obtain data from GBIF via rgbif
+#  dat <- data.frame(
+#    species = "Panthera leo",
+#    decimalLongitude = runif(min = -23, max = 83, n = 10000),
+#    decimalLatitude = runif(min = -60, max = 35, n = 10000),
+#    countryCode = c("NA", "CG"),
+#    individualCount = 1,
+#    gbifID = sample(1:100000, size = 10000),
+#    family = "Felidae",
+#    taxonRnak = "species",
+#    coordinateUncertaintyInMeters = rnorm(mean = 100000, sd = 10000, n= 10000),
+#    year = sample(1960:2018, size = 10000, replace = TRUE),
+#    basisOfRecord = "OBSERVATION",
+#    institutionCode = "UU",
+#    datasetName = sample(letters, size = 10000, replace = TRUE)
+#    )
+#  
+#  # remove records without coordinates
+#  dat <- dat%>%
+#    filter(!is.na(decimalLongitude))%>%
+#    filter(!is.na(decimalLatitude))
+#  
+
+## ---- echo = T, eval = nzchar(Sys.getenv("vignette_local")), warning = F, message = F----
 library(dplyr)
 library(ggplot2)
 library(rgbif)
@@ -17,7 +50,7 @@ library(countrycode)
 library(CoordinateCleaner)
 
 #obtain data from GBIF via rgbif
-dat <- occ_search(scientificName = "Panthera leo", limit = 5000, 
+dat <- occ_search(scientificName = "Panthera leo", limit = 5000,
                   return = "data", hasCoordinate = T)
 
 # names(dat) #a lot of columns
@@ -26,13 +59,15 @@ dat <- occ_search(scientificName = "Panthera leo", limit = 5000,
 dat <- dat %>%
   dplyr::select(species, decimalLongitude, decimalLatitude, countryCode, individualCount,
          gbifID, family, taxonRank, coordinateUncertaintyInMeters, year,
-         basisOfRecord, institutionCode, datasetName) 
+         basisOfRecord, institutionCode, datasetName)
 
 # remove records without coordinates
 dat <- dat%>%
   filter(!is.na(decimalLongitude))%>%
   filter(!is.na(decimalLatitude))
 
+
+## Visualize the data on a map
 
 ## ---- eval = TRUE, message = F, warning = F, fig.cap = "\\label{fig:al}Occurrence records for Panthera leo obtained from GBIF."----
 #plot data to get an overview
@@ -87,7 +122,7 @@ dat_fl <- dat[!flags$.summary,]
 #      mutate(val = cc_val(., value = "flagged"),
 #             sea = cc_sea(., value = "flagged"))
 
-## ---- r, eval = TRUE, collapse = TRUE------------------------------------
+## ---- eval = TRUE, collapse = TRUE---------------------------------------
 flags <- cf_age(x = dat_cl,
                 lon = "decimalLongitude",
                 lat = "decimalLatitude",
