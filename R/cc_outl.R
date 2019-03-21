@@ -75,6 +75,7 @@
 #' @importFrom sp over SpatialPoints
 #' @importFrom dplyr left_join
 #' @importFrom raster crop extent ncell res setValues
+#' @importFrom rgbif occ_count
 #' 
 cc_outl <- function(x, 
                     lon = "decimallongitude", 
@@ -100,13 +101,15 @@ cc_outl <- function(x,
   splist <- split(x, f = as.character(x[[species]]))
   
   # remove duplicate records and make sure that there are at least two records
-  test <- lapply(splist, "duplicated")
+  test <- lapply(splist, function(k){duplicated(k[, c(species, lon,lat)])})
   test <- lapply(test, "!")
   test <- as.vector(unlist(lapply(test, "sum")))
   splist <- splist[test >= min_occs]
   
   if(any(test < min_occs)){
-    warning(sprintf("Species with less than %o unique records will not be tested.", min_occs))
+    warning(sprintf(
+      "Species with less than %o unique records will not be tested.", 
+      min_occs))
   }
 
   # create raster for raster approximation  of large datasets
