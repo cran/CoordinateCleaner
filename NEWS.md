@@ -1,3 +1,12 @@
+CoordinateCleaner 2.0-9 (2019-04-02)
+=========================
+
+### MINOR IMPROVEMENTS
+  * recoded cc_outl, and added a thinning argument to account for sampling bias
+  * fixed a bug with the cc_outl test, that produced erroneous flags under some settings of mltpl
+  * extended the example dataset for the coordinate level-test suite to be more realistic
+
+
 CoordinateCleaner 2.0-8 (2019-03-21)
 =========================
 

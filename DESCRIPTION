@@ -2,7 +2,7 @@ Package: CoordinateCleaner
 Type: Package
 Title: Automated Cleaning of Occurrence Records from Biological
         Collections
-Version: 2.0-8
+Version: 2.0-9
 Authors@R: c(person(given = "Alexander", family = "Zizka", email = "alexander.zizka@idiv.de",
                     role = c("aut", "cre")),
              person(given = "Daniele", family = "Silvestro", role = "ctb"),
@@ -35,7 +35,7 @@ RoxygenNote: 6.1.1
 Suggests: covr, knitr, maps, rmarkdown, testthat
 SystemRequirements: GDAL (>= 2.0.1)
 NeedsCompilation: no
-Packaged: 2019-03-21 14:20:19 UTC; az64mycy
+Packaged: 2019-04-02 07:26:12 UTC; az64mycy
 Author: Alexander Zizka [aut, cre],
   Daniele Silvestro [ctb],
   Tobias Andermann [ctb],
@@ -56,4 +56,4 @@ Author: Alexander Zizka [aut, cre],
     ropensci, see <https://github.com/ropensci/onboarding/issues/210>)
 Maintainer: Alexander Zizka <alexander.zizka@idiv.de>
 Repository: CRAN
-Date/Publication: 2019-03-21 14:53:53 UTC
+Date/Publication: 2019-04-02 07:50:16 UTC
