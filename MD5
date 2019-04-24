@@ -1,6 +1,6 @@
-4bb2bad579a5cf0eb3cb813ef7400b09 *DESCRIPTION
-cbcd3a4f46150111b645f18409a6d72c *NAMESPACE
-e3e02c640b0979ed3a18788294c475b8 *NEWS.md
+7f3b4c75342ec2b803917b319630923f *DESCRIPTION
+3f23a809e605d850954ba85ac218038d *NAMESPACE
+ea933fd78c35e4bfb128e6ae0fa06553 *NEWS.md
 c681e2af5edb054abc2010cfeb603ce6 *R/CleanCoordinates.R
 19a6bda769dd5617ad1e067abd7fef81 *R/CleanCoordinatesDS.R
 669e0ea854a69d5c08ad288bc0257caf *R/CleanCoordinatesFOS.R
@@ -13,9 +13,9 @@ d1dd18e42f944aeafa78eae8d7d30f77 *R/cc_equ.R
 a7b11b8654ad50cd11bfce07efd72b47 *R/cc_gbif.R
 6f885ab113fdc552290f027cc71ac7d4 *R/cc_inst.R
 bc26c6005d9974fdfadc790bfc6ed773 *R/cc_iucn.R
-5ebea554846d9c918852384eb9877775 *R/cc_outl.R
-704467df679edfcb34a477942e1fbb14 *R/cc_sea.R
-13760b2f7b30ea86183a9eea685e0e72 *R/cc_urb.R
+8cde7a258fbf6806c0b968098e3d76c7 *R/cc_outl.R
+88d73b63fb6ddfd56c38bdc6457e9a45 *R/cc_sea.R
+8985774331fc0d900b5a1986930f01f8 *R/cc_urb.R
 95d5deba3c741574e0ddacdd9a1df6c8 *R/cc_val.R
 0bc158a3a9db9cbd091dc6f6f9ff4130 *R/cc_zero.R
 e981e4c9a736c9e644f2afb9e2e2c3b2 *R/cd_ddmm.R
@@ -24,7 +24,7 @@ d903c750cff9726920293a3899f005cd *R/cf_age.R
 ee5276bfd31b0cf9b7d25b48b6e08576 *R/cf_equal.R
 4f2c0d0011498129f95f200171a71deb *R/cf_outl.R
 1d6eb9c283b922876ba106befd993b61 *R/cf_range.R
-07add8045aff6a4f2bde5f188a1f4779 *R/clean_coordinates.R
+d4e81fa131db80de66561d23d1c5977d *R/clean_coordinates.R
 2552d91298b4d66874c26a03a439a37d *R/clean_dataset.R
 b59439901821a9694b2a5456af5d173c *R/clean_fossils.R
 2567bf85e9301f207891e38824d66e10 *R/internal_clean_coordinate.R
@@ -32,7 +32,7 @@ b59439901821a9694b2a5456af5d173c *R/clean_fossils.R
 1b2254603fb7c72cf9c7b7cb81bf7cb9 *R/internal_write_pyrate.R
 4fa77f85d01c5e7d46b0024b64af84fa *R/methods.spatialvalid.R
 2411d44d79a458f9a753ddeb46b07561 *R/write_pyrate.R
-cb6c19b85258533fcd9417c5a93aaca1 *README.md
+c16c02ce8d5c7bf506d1b429cbeb53b9 *README.md
 a4db523441224726e5de77df077c651e *data/buffland.rda
 5fea2c60d0579f870e1eed070409c0f3 *data/countryref.rda
 0fef062920a3724e1cfeb7866b3ea177 *data/datalist
@@ -61,7 +61,7 @@ c8049e10704424d559b78e791ace2650 *man/cf_age.Rd
 ed56ec48a71bb91d61e17fb802d08acc *man/cf_equal.Rd
 5886b48486557a786399071556972fd7 *man/cf_outl.Rd
 8c172ae7ed4c2515f20a060f33bbafc0 *man/cf_range.Rd
-4103b79d96f6a3045f696fa5d790b449 *man/clean_coordinates.Rd
+fc0419dba5e25891ce02191822d23d52 *man/clean_coordinates.Rd
 6a89de1610a2bdbcb866a4cac86d96de *man/clean_dataset.Rd
 f19a3b3c249b03eccc2ce67da221c7a3 *man/clean_fossils.Rd
 d9cb4b5609ddda50b0186ef11e7d25b3 *man/countryref.Rd
@@ -71,6 +71,6 @@ cfd260791c71fd01fb1e87eac7233ced *man/plot.spatialvalid.Rd
 9fed4e7f711932cf6cb4777d21781883 *man/write_pyrate.Rd
 da8e1967abf374bb682fc3aaa27f02cc *tests/testthat.R
 35d6264c61378e7e847b76771a309ea7 *tests/testthat/Test_fossillevel_cleaning.R
-8e7db2974054acf1468025395f9fa5cb *tests/testthat/test_coordinatelevel_functions.R
+566d65ee72c3a853428cbc5694e10538 *tests/testthat/test_coordinatelevel_functions.R
 2557822610e39f3230ccf3332fe8decb *tests/testthat/test_datasetlevel_functions.R
-5ae945e52b19b0d77e31254389ab23f4 *tests/testthat/test_wrapper_functions.R
+7f6f1e028d91dbbabb3296a46e9ea09a *tests/testthat/test_wrapper_functions.R
