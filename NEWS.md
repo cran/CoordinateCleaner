@@ -1,3 +1,37 @@
+CoordinateCleaner 2.0-15 (2020-05-04)
+=========================
+
+### MINOR IMPROVEMENTS
+  * adapted the url format in the description files
+
+
+CoordinateCleaner 2.0-14 (2020-05-04)
+=========================
+
+### MINOR IMPROVEMENTS
+  * fixed a bug in cc_cen when setting an alternative reference
+  * added the ref_col argument to cc_coun to customize the column with ISO codes in the reference data
+  * adapted code to changes in sp and rgdal
+  * defunct CleanCoordinates, CleanCoordinatesDS, and CleanCoordinatesFOS
+  * fixed issue with input data.frame with unordered rownames in cc_outl
+  * fixed the 'ras not found' bug in cc_outl
+  
+  
+
+CoordinateCleaner 2.0-13 (2019-06-18)
+=========================
+
+### MINOR IMPROVEMENTS
+  * addressed the "ras not found" bug in cc_outl
+  
+CoordinateCleaner 2.0-12 (2019-05-2)
+=========================
+
+### MINOR IMPROVEMENTS
+  * improved documentation of cc_outl
+  * improved handling of rownames in cc_outl
+  
+  
 CoordinateCleaner 2.0-11 (2019-04-24)
 =========================
 
@@ -8,7 +42,7 @@ CoordinateCleaner 2.0-10 (2019-04-23)
 =========================
 
 ### MINOR IMPROVEMENTS
-  * improved error handling by cc_sea and cc_urb, in case the defaultreference cannot be obtained from the web
+  * improved error handling by cc_sea and cc_urb, in case the default reference cannot be obtained from the web
   * added a reference for the methodology to the description file
 
 
@@ -100,7 +134,7 @@ CoordinateCleaner 2.0-1 (2018-06-08)
   * fixed typos in Readme
   * set a download from naturalearth as default for cc_urb
   * reduced vignette memory use and size
-  * enables sf format for sustom references
+  * enables sf format for custom references
   * added speedup option for cc_sea
   * added webpage (https://azizka.github.io/CoordinateCleaner/)
 

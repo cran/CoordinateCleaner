@@ -64,7 +64,7 @@ cc_cen <- function(x,
   }
 
   # set default projection
-  wgs84 <- "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0"
+  wgs84 <- "+proj=longlat +datum=WGS84 +no_defs"
   
   # select relevant columns
   dat <- sp::SpatialPoints(x[, c(lon, lat)], 
@@ -79,7 +79,7 @@ cc_cen <- function(x,
       ref <- ref[ref$type == "province", ]
     })
   } else {
-    proj4string(ref) <- wgs84
+    #proj4string(ref) <- wgs84
     warning("assuming lat/lon for centroids.ref")
   }
 

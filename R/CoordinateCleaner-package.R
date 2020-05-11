@@ -52,7 +52,7 @@ NULL
 #' \item{capital}{Name of the country capital, empty for provinces.}
 #' \item{capital.lon}{Longitude of the country capital.}
 #' \item{capital.lat}{Latitude of the country capital.}
-#' \item{area_sqkm}{The area of the country or prvoince.}}
+#' \item{area_sqkm}{The area of the country or province.}}
 #' @source CENTRAL INTELLIGENCE AGENCY (2014) \emph{The World Factbook},
 #' Washington, DC.
 #' 
@@ -65,7 +65,7 @@ NULL
 #' head(countryref)
 NULL
 
-#' Deprecated functions in CoordinateCleaener
+#' Defunct functions in CoordinateCleaener
 #' 
 #' These functions still work but will be removed (defunct) in the next version.
 #' 
@@ -81,7 +81,7 @@ NULL
 #'  instead
 #' }
 #' 
-#' @name CoordinateCleaner-deprecated
+#' @name CoordinateCleaner-defunct
 NULL
 
 
@@ -97,9 +97,9 @@ NULL
 #' @docType data
 #' @format A data frame with 12170 observations on 12 variables.
 #' @source Compiled from various sources: \itemize{ \item Global Biodiversity
-#' Information Facility \url{www.gbif.org} \item Wikipedia
-#' \url{www.wikipedia.org} \item Geonames \url{www.geonames.org} \item The Global
-#' Registry of Biodiversity Repositories \url{www.grbio.org} \item Index
+#' Information Facility \url{https://www.gbif.org/} \item Wikipedia
+#' \url{https://www.wikipedia.org/} \item Geonames \url{https://www.geonames.org/} \item The Global
+#' Registry of Biodiversity Repositories \item Index
 #' Herbariorum \url{http://sweetgum.nybg.org/science/ih/}
 #' \item Botanic Gardens Conservation International \url{https://www.bgci.org/}
 #' }

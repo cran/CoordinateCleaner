@@ -1,13 +1,13 @@
-# CoordinateCleaner v2.0-11
+# CoordinateCleaner v2.0-15
 [![Build Status](https://travis-ci.org/ropensci/CoordinateCleaner.svg?branch=master)](https://travis-ci.org/ropensci/CoordinateCleaner)
 [![codecov.io](https://codecov.io/github/ropensci/coordinatecleaner/graphs/badge.svg?branch=master)](https://codecov.io/github/ropensci/CoordinateCleaner)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/CoordinateCleaner)](https://cran.r-project.org/package=CoordinateCleaner)
-[![downloads](http://cranlogs.r-pkg.org/badges/grand-total/CoordinateCleaner)](http://cranlogs.r-pkg.org/badges/grand-total/CoordinateCleaner)
-[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/CoordinateCleaner)](http://cranlogs.r-pkg.org/badges/CoordinateCleaner)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/CoordinateCleaner)](https://cran.r-project.org/package=CoordinateCleaner)
+[![downloads](https://cranlogs.r-pkg.org/badges/grand-total/CoordinateCleaner)](http://cranlogs.r-pkg.org/badges/grand-total/CoordinateCleaner)
+[![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/CoordinateCleaner)](http://cranlogs.r-pkg.org/badges/CoordinateCleaner)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2539408.svg)](https://doi.org/10.5281/zenodo.2539408)
 
-**There was a bug in the cc_outl function in previsous versions, so for outlier testing make sure to use version 2.0-9 or higher.**
+**There was a bug in the cc_outl function in previous versions, so for outlier testing make sure to use version 2.0-9 or higher.**
 
 Automated flagging of common spatial and temporal errors in biological and palaeontological collection data, for the use in conservation, ecology and palaeontology. Specifically includes tests for
 
@@ -37,13 +37,13 @@ See [News](https://github.com/ropensci/CoordinateCleaner/blob/master/NEWS.md) fo
 # Installation
 ## Stable from CRAN
 
-```{r}
+```r
 install.packages("CoordinateCleaner")
 library(CoordinateCleaner)
 ```
 
 ## Developmental using devtools
-```{r}
+```r
 devtools::install_github("ropensci/CoordinateCleaner")
 library(CoordinateCleaner)
 ```
@@ -51,7 +51,7 @@ library(CoordinateCleaner)
 # Usage
 A simple example:
 
-```{r}
+```r
 # Simulate example data
 minages <- runif(250, 0, 65)
 exmpl <- data.frame(species = sample(letters, size = 250, replace = TRUE),
@@ -96,7 +96,7 @@ Pipelines for cleaning data from the Global Biodiversity Information Facility (G
 See the [CONTRIBUTING](https://github.com/ropensci/CoordinateCleaner/blob/master/CONTRIBUTING.md) document.
 
 # Citation
-Zizka A, Silvestro D, Andermann T, Azevedo J, Duarte Ritter C, Edler D, Farooq H, Herdean A, Ariza M, Scharn R, Svanteson S, Wengtrom N, Zizka V & Antonelli A (in press) CoordinateCleaner: standardized cleaning of occurrence records from biological collection databases. Methods in Ecology and Evolution, 0:0-0, doi:10.1111/2041-210X.13152, https://github.com/ropensci/CoordinateCleaner
+Zizka A, Silvestro D, Andermann T, Azevedo J, Duarte Ritter C, Edler D, Farooq H, Herdean A, Ariza M, Scharn R, Svanteson S, Wengtrom N, Zizka V & Antonelli A (2019) CoordinateCleaner: standardized cleaning of occurrence records from biological collection databases. Methods in Ecology and Evolution, 10(5):744-751, doi:10.1111/2041-210X.13152, https://github.com/ropensci/CoordinateCleaner
 
 [![ropensci_footer](https://ropensci.org/public_images/ropensci_footer.png)](https://ropensci.org)
 

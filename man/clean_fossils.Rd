@@ -5,15 +5,31 @@
 \alias{CleanCoordinatesFOS}
 \title{Geographic and Temporal Cleaning of Records from Fossil Collections}
 \usage{
-clean_fossils(x, lon = "lng", lat = "lat", min_age = "min_ma",
-  max_age = "max_ma", taxon = "accepted_name", tests = c("agesequal",
-  "centroids", "equal", "gbif", "institutions", "spatiotemp", "temprange",
-  "validity", "zeros"), countries = NULL, centroids_rad = 0.05,
-  centroids_detail = "both", inst_rad = 0.001,
-  outliers_method = "quantile", outliers_threshold = 5,
-  outliers_size = 7, outliers_replicates = 5, zeros_rad = 0.5,
-  centroids_ref = NULL, country_ref = NULL, inst_ref = NULL,
-  value = "spatialvalid", verbose = TRUE, report = FALSE)
+clean_fossils(
+  x,
+  lon = "lng",
+  lat = "lat",
+  min_age = "min_ma",
+  max_age = "max_ma",
+  taxon = "accepted_name",
+  tests = c("agesequal", "centroids", "equal", "gbif", "institutions", "spatiotemp",
+    "temprange", "validity", "zeros"),
+  countries = NULL,
+  centroids_rad = 0.05,
+  centroids_detail = "both",
+  inst_rad = 0.001,
+  outliers_method = "quantile",
+  outliers_threshold = 5,
+  outliers_size = 7,
+  outliers_replicates = 5,
+  zeros_rad = 0.5,
+  centroids_ref = NULL,
+  country_ref = NULL,
+  inst_ref = NULL,
+  value = "spatialvalid",
+  verbose = TRUE,
+  report = FALSE
+)
 }
 \arguments{
 \item{x}{data.frame. Containing fossil records, containing taxon names, ages,
@@ -82,7 +98,7 @@ is used.  Alternatives must be identical in structure.}
 
 \item{value}{a character string defining the output value. See the value
 section for details. one of \sQuote{spatialvalid}, \sQuote{summary},
-\sQuote{cleaned}. Default = \sQuote{\code{spatialvalid}}.}
+\sQuote{clean}. Default = \sQuote{\code{spatialvalid}}.}
 
 \item{verbose}{logical. If TRUE reports the name of the test and the number
 of records flagged.}
@@ -172,8 +188,9 @@ summary(test)
 
 }
 \seealso{
-Other Wrapper functions: \code{\link{clean_coordinates}},
-  \code{\link{clean_dataset}}
+Other Wrapper functions: 
+\code{\link{clean_coordinates}()},
+\code{\link{clean_dataset}()}
 }
 \concept{Wrapper functions}
 \keyword{Coordinate}
