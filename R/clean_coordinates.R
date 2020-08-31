@@ -193,7 +193,7 @@ clean_coordinates <- function(x,
                              capitals_ref = NULL, 
                              centroids_ref = NULL, 
                              country_ref = NULL, 
-                             country_refcol = "iso_a3_eh",
+                             country_refcol = "iso_a3",
                              inst_ref = NULL, 
                              range_ref = NULL,
                              seas_ref = NULL, 
@@ -321,7 +321,7 @@ clean_coordinates <- function(x,
       value = "ids", verbose = verbose
     )
     otl <- rep(TRUE, nrow(x))
-    otl[otl_flag] <- FALSE
+    otl[as.numeric(otl_flag)] <- FALSE
     out$otl <- otl
   }
 

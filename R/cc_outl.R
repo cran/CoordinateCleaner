@@ -26,7 +26,7 @@
 #' from www.gbif.org, per country as a proxy of sampling effort. The outlier test 
 #' (the mean distance) for each records is than weighted by the log transformed 
 #' number of records per square kilometre in this country. 
-#' See for \url{https://ropensci.github.io/CoordinateCleaner/articles/Tutorial_geographic_outliers.html} 
+#' See for \url{https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13152}
 #' an example and further explanation of the outlier test.
 #' 
 #' @param species character string. The column with the species name. Default
@@ -320,7 +320,7 @@ cc_outl <- function(x,
         # normalize by area
         nrec_norm <- dplyr::left_join(nrec, area, by = "country")
         nrec_norm$norm <- log(nrec_norm$recs /  (nrec_norm$area  / 1000000 / 100))
-        ref <- raster::crop(ref, raster::extent(pts) + 1)
+        #ref <- raster::crop(ref, raster::extent(pts) + 1)
         
         # get country from coordinates and compare with provided country
         country <- sp::over(x = pts, y = ref)[, "iso_a2"]

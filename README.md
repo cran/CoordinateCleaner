@@ -1,13 +1,13 @@
-# CoordinateCleaner v2.0-15
+# CoordinateCleaner v2.0-17
 [![Build Status](https://travis-ci.org/ropensci/CoordinateCleaner.svg?branch=master)](https://travis-ci.org/ropensci/CoordinateCleaner)
 [![codecov.io](https://codecov.io/github/ropensci/coordinatecleaner/graphs/badge.svg?branch=master)](https://codecov.io/github/ropensci/CoordinateCleaner)
-[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/CoordinateCleaner)](https://cran.r-project.org/package=CoordinateCleaner)
-[![downloads](https://cranlogs.r-pkg.org/badges/grand-total/CoordinateCleaner)](http://cranlogs.r-pkg.org/badges/grand-total/CoordinateCleaner)
-[![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/CoordinateCleaner)](http://cranlogs.r-pkg.org/badges/CoordinateCleaner)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/CoordinateCleaner)](https://cranlogs.r-pkg.org:443/badges/CoordinateCleaner)
+[![downloads](https://cranlogs.r-pkg.org/badges/grand-total/CoordinateCleaner)](https://cranlogs.r-pkg.org:443/badges/grand-total/CoordinateCleaner)
+[![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/CoordinateCleaner)](https://cranlogs.r-pkg.org:443/badges/CoordinateCleaner)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2539408.svg)](https://doi.org/10.5281/zenodo.2539408)
 
-**There was a bug in the cc_outl function in previous versions, so for outlier testing make sure to use version 2.0-9 or higher.**
+**There were some changes to the documentation of CoordinateCleaner with version 2.0-17. You can find three vignettes on cleaning point occurrence records (for instance from www.gbif.org), fossil data and using custom gazetteers with the package now. Additional information on dataset-level cleaning and identifying geographic outliers can be found [here](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13152).**
 
 Automated flagging of common spatial and temporal errors in biological and palaeontological collection data, for the use in conservation, ecology and palaeontology. Specifically includes tests for
 
@@ -30,7 +30,7 @@ Automated flagging of common spatial and temporal errors in biological and palae
 * Equal minimum and maximum ages (fossils)
 * Spatio-temporal outliers (fossils)
 
-CoordinateCleaner can be particularly useful to improve data quality when using data from GBIF (e.g. obtained with [rgbif]( https://github.com/ropensci/rgbif)) or the Paleobiology database (e.g. obtained with [paleobioDB](https://github.com/ropensci/paleobioDB)) for historical biogeography (e.g. with [BioGeoBEARS](https://CRAN.R-project.org/package=BioGeoBEARS) or [phytools](https://CRAN.R-project.org/package=phytools)), automated conservation assessment (e.g. with [speciesgeocodeR](https://github.com/azizka/speciesgeocodeR/wiki) or [conR](https://CRAN.R-project.org/package=ConR)) or species distribution modelling (e.g. with [dismo](https://CRAN.R-project.org/package=dismo) or [sdm](https://CRAN.R-project.org/package=sdm)). See [scrubr](https://github.com/ropensci/scrubr) and [taxize](https://github.com/ropensci/taxize) for complementary taxonomic cleaning or [biogeo](https://github.com/cran/biogeo) for correcting spatial coordinate errors. You can find a detailed comparison of the functionality of `CoordinateCleaner`, `scrubr`, and `biogeo` [here](https://ropensci.github.io/CoordinateCleaner/articles/comparison_other_software.html).
+CoordinateCleaner can be particularly useful to improve data quality when using data from GBIF (e.g. obtained with [rgbif]( https://github.com/ropensci/rgbif)) or the Paleobiology database (e.g. obtained with [paleobioDB](https://github.com/ropensci/paleobioDB)) for historical biogeography (e.g. with [BioGeoBEARS](https://CRAN.R-project.org/package=BioGeoBEARS) or [phytools](https://CRAN.R-project.org/package=phytools)), automated conservation assessment (e.g. with [speciesgeocodeR](https://github.com/azizka/speciesgeocodeR/wiki) or [conR](https://CRAN.R-project.org/package=ConR)) or species distribution modelling (e.g. with [dismo](https://CRAN.R-project.org/package=dismo) or [sdm](https://CRAN.R-project.org/package=sdm)). See [scrubr](https://github.com/ropensci/scrubr) and [taxize](https://github.com/ropensci/taxize) for complementary taxonomic cleaning or [biogeo](https://github.com/cran/biogeo) for correcting spatial coordinate errors.
 
 See [News](https://github.com/ropensci/CoordinateCleaner/blob/master/NEWS.md) for update information.
 
