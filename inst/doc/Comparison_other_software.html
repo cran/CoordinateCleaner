@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Comparison of CoordinateCleaner to other tools</title>
+
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Comparison of CoordinateCleaner to other tools</h1>
+
+
+
+<p>##Background Erroneous database entries and problematic geographic coordinates are a central issue in biogeography and there is a set of tools available to address different dimensions of the problem. CoordinateCleaner focuses on the fast and reproducible flagging of large amounts of records, and additional functions to detect dataset-level and fossil-specific biases. In the R-environment the <a href="https://github.com/ropensci/scrubr">scrubr</a> and <a href="https://CRAN.R-project.org/package=biogeo">biogeo</a> offer cleaning approaches complementary to CoordinateCleaner. The scrubr package combines basic geographic cleaning (comparable to cc_dupl, cc_zero and cc_count in CoordinateCleaner) but adds options to clean taxonomic names (See also <a href="https://github.com/ropensci/taxize">taxize</a>) and date information. biogeo includes some basic automated geographic cleaning (similar to <code>cc_val</code>, <code>cc_count</code> and <code>cc_outl</code>) but rather focusses on correcting suspicious coordinates on a manual basis using environmental information.</p>
+<p>Table 1. Function by function comparison of CoordinateCleaner, scrubr and biogeo.</p>
+<table>
+<colgroup>
+<col width="31%"></col>
+<col width="13%"></col>
+<col width="17%"></col>
+<col width="17%"></col>
+<col width="19%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th>Functionality</th>
+<th>CoordinateCleaner 2.0-2</th>
+<th>scrubr 0.1.1</th>
+<th>biogeo 1.0</th>
+<th>Percent overlap</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Missing coordinates</td>
+<td>cc_val</td>
+<td>coord_incomplete</td>
+<td>missingvalsexclude</td>
+<td>100%</td>
+</tr>
+<tr class="even">
+<td>Coordinates outside CRS</td>
+<td>cc_val</td>
+<td>coord_impossible</td>
+<td>-</td>
+<td>100%</td>
+</tr>
+<tr class="odd">
+<td>Duplicated records</td>
+<td>cc_dupl</td>
+<td>dedup</td>
+<td>duplicatesexclude</td>
+<td>The aim is identical, methods differ</td>
+</tr>
+<tr class="even">
+<td>0/0 coordinates</td>
+<td>cc_zero</td>
+<td>coord_unlikely</td>
+<td>-</td>
+<td>100%</td>
+</tr>
+<tr class="odd">
+<td>Identical lon/lat</td>
+<td>cc_equ</td>
+<td>-</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="even">
+<td>Country capitals</td>
+<td>cc_cap</td>
+<td>-</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="odd">
+<td>Political unit centroids</td>
+<td>cc_cen</td>
+<td>-</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="even">
+<td>Coordinates in-congruent with additional location information</td>
+<td>cc_count</td>
+<td>coord_within</td>
+<td>errorcheck, quickclean</td>
+<td>100%</td>
+</tr>
+<tr class="odd">
+<td>Coordinates assigned to GBIF headquarters</td>
+<td>cc_gbif</td>
+<td>-</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="even">
+<td>Coordinates assigned to the location of biodiversity institutions</td>
+<td>cc_inst</td>
+<td>-</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="odd">
+<td>Coordinates outside natural range</td>
+<td>cc_iucn</td>
+<td>-</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="even">
+<td>Spatial outliers</td>
+<td>cc_outl</td>
+<td>-</td>
+<td>outliers</td>
+<td>50%, biogeo uses environmental distance</td>
+</tr>
+<tr class="odd">
+<td>Coordinates within the ocean</td>
+<td>cc_sea</td>
+<td>-</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="even">
+<td>Coordinates in urban area</td>
+<td>cc_urb</td>
+<td>-</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="odd">
+<td>Coordinate conversion error</td>
+<td>dc_ddmm</td>
+<td>-</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="even">
+<td>Rounded coordinates/rasterized collection</td>
+<td>dc_round</td>
+<td>-</td>
+<td>precisioncheck</td>
+<td>20%, biogeo test for predefined rasters</td>
+</tr>
+<tr class="odd">
+<td>Fossils: invalid age range</td>
+<td>tc_equal</td>
+<td>-</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="even">
+<td>Fossils: excessive age range</td>
+<td>tc_range</td>
+<td>-</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="odd">
+<td>Fossils: temporal outlier</td>
+<td>tc_outl</td>
+<td>-</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="even">
+<td>Fossils: PyRate interface</td>
+<td>WritePyrate</td>
+<td>-</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="odd">
+<td>Wrapper functions to run all test</td>
+<td>CleanCoordinates, CleanCoordinatesDS, CleanCoordiantesFOS</td>
+<td>-</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="even">
+<td>Database of biodiversity institutions</td>
+<td>institutions</td>
+<td>-</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="odd">
+<td>Taxonomic cleaning</td>
+<td>-</td>
+<td>tax_no_epithet</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="even">
+<td>Missing date</td>
+<td>-</td>
+<td>date_missing</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="odd">
+<td>Add date</td>
+<td>-</td>
+<td>date_create</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="even">
+<td>Date format</td>
+<td>-</td>
+<td>date_standardize</td>
+<td>-</td>
+<td>0%</td>
+</tr>
+<tr class="odd">
+<td>Reformatting coordinate annotation</td>
+<td>-</td>
+<td>-</td>
+<td>a large set of functions</td>
+<td>0 %</td>
+</tr>
+<tr class="even">
+<td>Correcting coordinates using guessing and environmental distance</td>
+<td>-</td>
+<td>-</td>
+<td>a large set of functions</td>
+<td>0 %</td>
+</tr>
+</tbody>
+</table>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

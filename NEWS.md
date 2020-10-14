@@ -1,3 +1,16 @@
+CoordinateCleaner 2.0-19 (2020-10-13)
+=========================
+
+### MINOR IMPROVEMENTS
+  * Adaption of the Description file style.
+  
+CoordinateCleaner 2.0-18 (2020-10-09)
+=========================
+
+### MINOR IMPROVEMENTS
+  * Precomputed vignettes that need internet access
+  
+  
 CoordinateCleaner 2.0-17 (2020-08-18)
 =========================
 
