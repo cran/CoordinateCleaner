@@ -13,6 +13,20 @@
 #' data("buffland")
 NULL
 
+#'Global Coastlines buffered by -1 degree
+#'
+#'  A \code{SpatialPolygonsDataFrame} with global coastlines, with a -1 degree buffer to extent coastlines as alternative reference for \code{\link{cc_sea}}. Can be useful to identify marine species on land without flagging records in estuaries, etc.
+#'
+#' @name buffsea
+#' @docType data
+#' @source 
+#' \url{http://www.naturalearthdata.com/downloads/10m-physical-vectors/}
+#' @keywords gazetteers
+#' @examples
+#' 
+#' data("buffsea")
+NULL
+
 
 #' CoordinateCleaner
 #' 
@@ -35,7 +49,7 @@ NULL
 #' 
 #' A \code{data.frame} with coordinates of country and province centroids and country
 #' capitals as reference for the \code{\link{clean_coordinates}}, \code{\link{cc_cen}} and \code{\link{cc_cap}} functions.
-#' Coordinates are based on the Central Intelligence Agency World Factbook  \url{https://www.cia.gov/library/publications/the-world-factbook/},
+#' Coordinates are based on the Central Intelligence Agency World Factbook  \url{https://www.cia.gov/the-world-factbook/},
 #' \url{http://thematicmapping.org/downloads/world_borders.php} and geolocate \url{http://geo-locate.org}.
 #' 
 #' 
@@ -60,7 +74,7 @@ NULL
 #' @source CENTRAL INTELLIGENCE AGENCY (2014) \emph{The World Factbook},
 #' Washington, DC.
 #' 
-#' \url{https://www.cia.gov/library/publications/the-world-factbook/}
+#' \url{https://www.cia.gov/the-world-factbook/}
 #' \url{http://thematicmapping.org/downloads/world_borders.php}
 #' \url{http://geo-locate.org}
 #' @keywords gazetteers
@@ -69,26 +83,6 @@ NULL
 #' data(countryref)
 #' head(countryref)
 NULL
-
-#' Defunct functions in CoordinateCleaener
-#' 
-#' These functions still work but will be removed (defunct) in the next version.
-#' 
-#' \itemize{
-#'  \item \code{\link{CleanCoordinates}}: This function is deprecated, and will
-#'  be removed in the next version of this package. Use \code{\link{clean_coordinates}}
-#'  instead
-#'  \item \code{\link{CleanCoordinatesDS}}: This function is deprecated, and will
-#'  be removed in the next version of this package. Use \code{\link{clean_dataset}}
-#'  instead
-#'  \item \code{\link{CleanCoordinatesFOS}}: This function is deprecated, and will
-#'  be removed in the next version of this package. Use \code{\link{clean_fossils}}
-#'  instead
-#' }
-#' 
-#' @name CoordinateCleaner-defunct
-NULL
-
 
 
 #' Global Locations of Biodiversity Institutions

@@ -25,14 +25,14 @@ A data frame with 5,305 observations on 13 variables.
 CENTRAL INTELLIGENCE AGENCY (2014) \emph{The World Factbook},
 Washington, DC.
 
-\url{https://www.cia.gov/library/publications/the-world-factbook/}
+\url{https://www.cia.gov/the-world-factbook/}
 \url{http://thematicmapping.org/downloads/world_borders.php}
 \url{http://geo-locate.org}
 }
 \description{
 A \code{data.frame} with coordinates of country and province centroids and country
 capitals as reference for the \code{\link{clean_coordinates}}, \code{\link{cc_cen}} and \code{\link{cc_cap}} functions.
-Coordinates are based on the Central Intelligence Agency World Factbook  \url{https://www.cia.gov/library/publications/the-world-factbook/},
+Coordinates are based on the Central Intelligence Agency World Factbook  \url{https://www.cia.gov/the-world-factbook/},
 \url{http://thematicmapping.org/downloads/world_borders.php} and geolocate \url{http://geo-locate.org}.
 }
 \examples{
