@@ -9,8 +9,8 @@ set.seed(1)
 lat <- runif(250, min = -26, max = -11)
 
 exmpl <- data.frame(species = sp,
-                    decimallongitude = lon,
-                    decimallatitude = lat,
+                    decimalLongitude = lon,
+                    decimalLatitude = lat,
                     ISO3 = "RUS")
 
 
@@ -19,7 +19,7 @@ test_that("clean_coordinates produces correct output", {
   t1 <- clean_coordinates(x = exmpl)
   expect_equal(ncol(t1), 14)
   expect_equal(nrow(t1), 250)
-  expect_equal(sum(t1$.summary), 184)
+  expect_equal(sum(t1$.summary), 185)
   
   expect_is(plot(t1), "gg")
   expect_is(plot(t1, clean = FALSE), "gg")
@@ -43,8 +43,8 @@ test_that("clean_coordinates countries argument produces correct output", {
 #Dataset level cleaning
 #Create test dataset
 clean <- data.frame(dataset = rep("clean", 1000),
-                    decimallongitude = runif(min = -43, max = -40, n = 1000),
-                    decimallatitude = runif(min = -13, max = -10, n = 1000))
+                    decimalLongitude = runif(min = -43, max = -40, n = 1000),
+                    decimalLatitude = runif(min = -13, max = -10, n = 1000))
 
 bias.long <- c(round(runif(min = -42, max = -40, n = 500), 1),
                round(runif(min = -42, max = -40, n = 300), 0),
@@ -53,8 +53,8 @@ bias.lat <- c(round(runif(min = -12, max = -10, n = 500), 1),
               round(runif(min = -12, max = -10, n = 300), 0),
               runif(min = -12, max = -10, n = 200))
 bias <- data.frame(dataset = rep("biased", 1000),
-                   decimallongitude = bias.long,
-                   decimallatitude = bias.lat)
+                   decimalLongitude = bias.long,
+                   decimalLatitude = bias.lat)
 test <- rbind(clean, bias)
 
 
@@ -89,8 +89,8 @@ set.seed(1)
 age <- runif(250, 0.1, 65)
 
 exmpl <- data.frame(accepted_name = sample(letters, size = 250, replace = TRUE),
-                    lng = lng,
-                    lat = lat,
+                    decimalLongitude = lng,
+                    decimalLatitude = lat,
                     min_ma = minages,
                     max_ma = minages + age)
 
@@ -98,7 +98,7 @@ exmpl <- data.frame(accepted_name = sample(letters, size = 250, replace = TRUE),
 test_that("fossil wrapper cleaning works", {
   skip("message")
   expect_is(clean_fossils(exmpl), "spatialvalid")
-  expect_equal(sum(clean_fossils(exmpl)$.summary), 249)
+  expect_equal(sum(clean_fossils(exmpl)$.summary), 250)
 })
 
 # test_that("CleanCoordinatesFOS work", {

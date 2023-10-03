@@ -20,19 +20,19 @@
 #' @examples
 #' 
 #' x <- data.frame(species = "A", 
-#'                 decimallongitude = c(12.58, 12.58), 
-#'                 decimallatitude = c(55.67, 30.00))
+#'                 decimalLongitude = c(12.58, 12.58), 
+#'                 decimalLatitude = c(55.67, 30.00))
 #'                 
 #' cc_gbif(x)
 #' cc_gbif(x, value = "flagged")
 #' 
 #' @export
 #' @importFrom geosphere destPoint
-#' @importFrom sp coordinates CRS disaggregate over Polygon Polygons SpatialPolygons SpatialPoints
-#' @importFrom rgeos gBuffer
+#' @importFrom terra vect buffer extract
+
 cc_gbif <- function(x, 
-                    lon = "decimallongitude", 
-                    lat = "decimallatitude",
+                    lon = "decimalLongitude", 
+                    lat = "decimalLatitude",
                     species = "species",
                     buffer = 1000,
                     geod = TRUE,
@@ -48,20 +48,22 @@ cc_gbif <- function(x,
   }
   
   
-  if(buffer > 10 & !geod){
+  if (buffer > 10 & !geod){
     warnings("Using large buffer check 'geod'")
   }
-  if(buffer < 100 & geod){
+  if (buffer < 100 & geod){
     warnings("Using small buffer check 'geod'")
   }
+
+  # Fix buffer when equals 0 
+  buffer <- ifelse(buffer == 0, 0.00000000001, buffer)
   
   # set default projection
   wgs84 <- "+proj=longlat +datum=WGS84 +no_defs"
-
-  dat <- sp::SpatialPoints(x[, c(lon, lat)], 
-                           proj4string = sp::CRS(wgs84))
-
-  if(geod){
+  dat <- terra::vect(x[, c(lon, lat)],
+                     geom = c(lon, lat),
+                     crs = wgs84)
+  if (geod) {
     # credits to https://seethedatablog.wordpress.com
     dg <- seq(from = 0, to = 360, by = 5)
     
@@ -74,20 +76,22 @@ cc_gbif <- function(x,
     
     lst <- split(data.frame(buff_XY), f = id)
     
+    
     # Make SpatialPolygons out of the list of coordinates
-    poly   <- lapply(lst, sp::Polygon, hole = FALSE)
-    polys  <- lapply(list(poly), sp::Polygons, ID = NA)
-    ref <- sp::SpatialPolygons(Srl = polys, proj4string = CRS(wgs84))
+    lst <- lapply(lst, as.matrix)
+    ref <- sapply(lst, terra::vect, crs = wgs84, type = "polygons")
+    ref <- Reduce(rbind, ref)
     
     #point in polygon test
-    out <- is.na(sp::over(x = dat, y = ref))
-  }else{
-    ref <- rgeos::gBuffer(sp::SpatialPoints(cbind(12.58, 55.67), 
-                                            proj4string = sp::CRS(wgs84)), 
-                          width = 0.5)
-    
-    out <- sp::over(x = dat, y = ref)
-    out <- is.na(out)
+    ext_dat <- terra::extract(ref, dat)
+    out <- is.na(ext_dat[!duplicated(ext_dat[, 1]), 2])
+  } else {
+    ref_cen <- terra::vect(cbind(12.58, 55.67),
+                           crs = wgs84)
+    ref <- terra::buffer(ref_cen, width = buffer)
+    #point in polygon test
+    ext_dat <- terra::extract(ref, dat)
+    out <- is.na(ext_dat[!duplicated(ext_dat[, 1]), 2])
   }
   
   # implement the verification

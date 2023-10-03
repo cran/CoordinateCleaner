@@ -3,17 +3,16 @@
 \name{clean_coordinates}
 \alias{clean_coordinates}
 \alias{summary.spatialvalid}
-\alias{is.spatialvalid}
 \title{Geographic Cleaning of Coordinates from Biologic Collections}
 \usage{
 clean_coordinates(
   x,
-  lon = "decimallongitude",
-  lat = "decimallatitude",
+  lon = "decimalLongitude",
+  lat = "decimalLatitude",
   species = "species",
   countries = NULL,
-  tests = c("capitals", "centroids", "equal", "gbif", "institutions", "outliers",
-    "seas", "zeros"),
+  tests = c("capitals", "centroids", "equal", "gbif", "institutions", "outliers", "seas",
+    "zeros"),
   capitals_rad = 10000,
   centroids_rad = 1000,
   centroids_detail = "both",
@@ -28,49 +27,49 @@ clean_coordinates(
   centroids_ref = NULL,
   country_ref = NULL,
   country_refcol = "iso_a3",
+  country_buffer = NULL,
   inst_ref = NULL,
   range_ref = NULL,
   seas_ref = NULL,
   seas_scale = 50,
+  seas_buffer = NULL,
   urban_ref = NULL,
+  aohi_rad = NULL,
   value = "spatialvalid",
   verbose = TRUE,
   report = FALSE
 )
 }
 \arguments{
-\item{x}{data.frame. Containing geographical coordinates and species
-names.}
+\item{x}{data.frame. Containing geographical coordinates and species names.}
 
 \item{lon}{character string. The column with the longitude coordinates.
-Default = \dQuote{decimallongitude}.}
+Default = \dQuote{decimalLongitude}.}
 
 \item{lat}{character string. The column with the latitude coordinates.
-Default = \dQuote{decimallatitude}.}
+Default = \dQuote{decimalLatitude}.}
 
 \item{species}{a character string. A vector of the same length as rows in x,
 with the species identity for each record.  If NULL, \code{tests} must not
 include the "outliers" or "duplicates" tests.}
 
-\item{countries}{a character string. The column with the country assignment of
-each record in three letter ISO code. Default = \dQuote{countrycode}. If missing, the
-countries test is skipped.}
+\item{countries}{a character string. The column with the country assignment
+of each record in three letter ISO code. Default = \dQuote{countrycode}. If
+missing, the countries test is skipped.}
 
 \item{tests}{a vector of character strings, indicating which tests to run.
 See details for all tests available. Default = c("capitals", "centroids",
-"equal", "gbif", "institutions", "outliers",
-"seas", "zeros")}
+"equal", "gbif", "institutions", "outliers", "seas", "zeros")}
 
-\item{capitals_rad}{numeric. The radius around capital coordinates in
-meters. Default = 10000.}
+\item{capitals_rad}{numeric. The radius around capital coordinates in meters.
+Default = 10000.}
 
 \item{centroids_rad}{numeric. The radius around centroid coordinates in
 meters. Default = 1000.}
 
-\item{centroids_detail}{a \code{character string}. If set to
-\sQuote{country} only country (adm-0) centroids are tested, if set to
-\sQuote{provinces} only province (adm-1) centroids are tested.  Default =
-\sQuote{both}.}
+\item{centroids_detail}{a \code{character string}. If set to \sQuote{country}
+only country (adm-0) centroids are tested, if set to \sQuote{provinces}
+only province (adm-1) centroids are tested.  Default = \sQuote{both}.}
 
 \item{inst_rad}{numeric. The radius around biodiversity institutions
 coordinates in metres. Default = 100.}
@@ -91,39 +90,48 @@ to run the taxon-specific outlier test.  Default = 7.}
 \item{zeros_rad}{numeric. The radius around 0/0 in degrees. Default = 0.5.}
 
 \item{capitals_ref}{a \code{data.frame} with alternative reference data for
-the country capitals test. If missing, the \code{countryref} dataset is used.
-Alternatives must be identical in structure.}
+the country capitals test. If missing, the \code{countryref} dataset is
+used. Alternatives must be identical in structure.}
 
 \item{centroids_ref}{a \code{data.frame} with alternative reference data for
 the centroid test. If NULL, the \code{countryref} dataset is used.
 Alternatives must be identical in structure.}
 
-\item{country_ref}{a \code{SpatialPolygonsDataFrame} as alternative
-reference for the countries test. If NULL, the
-\code{rnaturalearth:ne_countries('medium')} dataset is used.}
+\item{country_ref}{a \code{SpatVector} as alternative reference
+for the countries test. If NULL, the
+\code{rnaturalearth:ne_countries('medium', returnclass = "sf")} dataset is used.}
 
-\item{country_refcol}{the column name in the reference dataset, containing the relevant
-ISO codes for matching. Default is to "iso_a3_eh" which referes to the ISO-3
-codes in the reference dataset. See notes.}
+\item{country_refcol}{the column name in the reference dataset, containing
+the relevant ISO codes for matching. Default is to "iso_a3_eh" which
+referes to the ISO-3 codes in the reference dataset. See notes.}
+
+\item{country_buffer}{numeric. Units are in meters. If provided, a buffer is
+created around each country polygon.}
 
 \item{inst_ref}{a \code{data.frame} with alternative reference data for the
-biodiversity institution test. If NULL, the \code{institutions} dataset
-is used.  Alternatives must be identical in structure.}
+biodiversity institution test. If NULL, the \code{institutions} dataset is
+used.  Alternatives must be identical in structure.}
 
-\item{range_ref}{a \code{SpatialPolygonsDataFrame} of species natural ranges.
-Required to include the 'ranges' test. See \code{\link{cc_iucn}} for details.}
+\item{range_ref}{a \code{SpatVector} of species natural ranges.
+Required to include the 'ranges' test. See \code{\link{cc_iucn}} for
+details.}
 
-\item{seas_ref}{a \code{SpatialPolygonsDataFrame} as alternative reference
-for the seas test. If NULL, the
-rnaturalearth::ne_download(=scale = 110, type = 'land', category = 'physical')
-dataset is used.}
+\item{seas_ref}{a \code{SpatVector} as alternative reference
+for the seas test. If NULL, the rnaturalearth::ne_download(scale = 110,
+type = 'land', category = 'physical', returnclass = "sf") dataset is used.}
 
-\item{seas_scale}{The scale of the default landmass reference. Must be one of 10, 50, 110.
-Higher numbers equal higher detail. Default = 50.}
+\item{seas_scale}{The scale of the default landmass reference. Must be one of
+10, 50, 110. Higher numbers equal higher detail. Default = 50.}
 
-\item{urban_ref}{a \code{SpatialPolygonsDataFrame} as alternative reference
+\item{seas_buffer}{numeric. Units are in meters. If provided, a buffer is
+created around sea polygon.}
+
+\item{urban_ref}{a \code{SpatVector} as alternative reference
 for the urban test. If NULL, the test is skipped. See details for a
 reference gazetteers.}
+
+\item{aohi_rad}{numeric. The radius around aohi coordinates in
+meters. Default = 1000.}
 
 \item{value}{a character string defining the output value. See the value
 section for details. one of \sQuote{spatialvalid}, \sQuote{summary},
@@ -158,9 +166,9 @@ collection databases.
 }
 \details{
 The function needs all coordinates to be formally valid according to WGS84.
-If the data contains invalid coordinates, the function will stop and return
-a vector flagging the invalid records. TRUE = non-problematic coordinate,
-FALSE = potentially problematic coordinates.
+If the data contains invalid coordinates, the function will stop and return a
+vector flagging the invalid records. TRUE = non-problematic coordinate, FALSE
+= potentially problematic coordinates.
 \itemize{
 \item capitals tests a radius around adm-0 capitals. The
 radius is \code{capitals_rad}.
@@ -170,8 +178,8 @@ The radius is \code{centroids_rad}.
 country indicated in the country column.  \emph{Switched off by default.}
 \item duplicates tests for duplicate records. This
 checks for identical coordinates or if a species vector is provided for
-identical coordinates within a species. All but the first records are
-flagged as duplicates. \emph{Switched off by default.}
+identical coordinates within a species. All but the first records are flagged
+as duplicates. \emph{Switched off by default.}
 \item equal tests for equal absolute longitude and latitude.
 \item gbif tests a one-degree radius around the GBIF
 headquarters in Copenhagen, Denmark.
@@ -180,28 +188,28 @@ biodiversity institutions from \code{instiutions}. The radius is
 \code{inst_rad}.
 \item outliers tests each species for outlier records.
 Depending on the \code{outliers_mtp} and \code{outliers.td} arguments either
-flags records that are a minimum distance away from all other records of
-this species (\code{outliers_td}) or records that are outside a multiple of
-the interquartile range of minimum distances to the next neighbour of this
-species (\code{outliers_mtp}). Three different methods are available
-for the outlier test: "If
-\dQuote{outlier} a boxplot method is used and records are flagged as
-outliers if their \emph{mean} distance to all other records of the same
-species is larger than mltpl * the interquartile range of the mean distance
-of all records of this species. If \dQuote{mad} the median absolute
+flags records that are a minimum distance away from all other records of this
+species (\code{outliers_td}) or records that are outside a multiple of the
+interquartile range of minimum distances to the next neighbour of this
+species (\code{outliers_mtp}). Three different methods are available for the
+outlier test: "If \dQuote{outlier} a boxplot method is used and records are
+flagged as outliers if their \emph{mean} distance to all other records of the
+same species is larger than mltpl * the interquartile range of the mean
+distance of all records of this species. If \dQuote{mad} the median absolute
 deviation is used. In this case a record is flagged as outlier, if the
 \emph{mean} distance to all other records of the same species is larger than
 the median of the mean distance of all points plus/minus the mad of the mean
-distances of all records of the species * mltpl. If \dQuote{distance}
-records are flagged as outliers, if the \emph{minimum} distance to the next
-record of the species is > \code{tdi}.
+distances of all records of the species * mltpl. If \dQuote{distance} records
+are flagged as outliers, if the \emph{minimum} distance to the next record of
+the species is > \code{tdi}.
 \item ranges tests if records fall within provided natural range polygons on
 a per species basis. See \code{\link{cc_iucn}} for details.
 \item seas tests if coordinates fall into the ocean.
 \item urban tests if coordinates are from urban areas.
 \emph{Switched off by default}
 \item validity checks if coordinates correspond to a lat/lon coordinate reference system.
-This test is always on, since all records need to pass for any other test to run.
+This test is always on, since all records need to pass for any other test to
+run.
 \item zeros tests for plain zeros, equal latitude and
 longitude and a radius around the point 0/0. The radius is \code{zeros.rad}.
 }
@@ -212,17 +220,17 @@ coordinates and coordinates exceeding the global extent (lon/lat, WGS84).
 See \url{https://ropensci.github.io/CoordinateCleaner/} for more details
 and tutorials.
 
-The country_refcol argument allows to adapt the function to the structure of
-alternative reference datasets. For instance, for
-\code{rnaturalearth::ne_countries(scale = "small")}, the default will fail,
+The country_refcol argument allows to adapt the function to the
+structure of alternative reference datasets. For instance, for
+\code{rnaturalearth::ne_countries(scale = "small", returnclass = "sf")}, the default will fail,
 but country_refcol = "iso_a3" will work.
 }
 \examples{
 
 
 exmpl <- data.frame(species = sample(letters, size = 250, replace = TRUE),
-                    decimallongitude = runif(250, min = 42, max = 51),
-                    decimallatitude = runif(250, min = -26, max = -11))
+                    decimalLongitude = runif(250, min = 42, max = 51),
+                    decimalLatitude = runif(250, min = -26, max = -11))
 
 test <- clean_coordinates(x = exmpl, 
                           tests = c("equal"))

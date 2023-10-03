@@ -1,7 +1,8 @@
 #' Identify Records with Identical lat/lon
 #' 
-#' Removes or flags records with equal latitude and longitude coordinates, either exact or
-#' absolute. Equal coordinates can often indicate data entry errors.
+#' Removes or flags records with equal latitude and longitude coordinates,
+#' either exact or absolute. Equal coordinates can often indicate data entry
+#' errors.
 #' 
 #' 
 #' @param test character string. Defines if coordinates are compared exactly
@@ -17,16 +18,16 @@
 #' @examples
 #' 
 #' x <- data.frame(species = letters[1:10], 
-#'                 decimallongitude = runif(100, -180, 180), 
-#'                 decimallatitude = runif(100, -90,90))
+#'                 decimalLongitude = runif(100, -180, 180), 
+#'                 decimalLatitude = runif(100, -90,90))
 #' 
 #' cc_equ(x)
 #' cc_equ(x, value = "flagged")
 #' 
 #' @export
 cc_equ <- function(x, 
-                   lon = "decimallongitude", 
-                   lat = "decimallatitude", 
+                   lon = "decimalLongitude", 
+                   lat = "decimalLatitude", 
                    test = "absolute",
                    value = "clean", 
                    verbose = TRUE) {
@@ -46,14 +47,12 @@ cc_equ <- function(x,
   })
 
   if (verbose) {
-    if(value == "clean"){
+    if (value == "clean"){
       message(sprintf("Removed %s records.", sum(!out)))
-    }else{
+    } else {
       message(sprintf("Flagged %s records.", sum(!out)))
     }
   }
 
   switch(value, clean = return(x[out, ]), flagged = return(out))
-
-  return(out)
 }

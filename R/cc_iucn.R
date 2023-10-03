@@ -11,13 +11,12 @@
 #' Note: the buffer radius is in degrees, thus will differ slightly between
 #' different latitudes. 
 #' 
-#' @param range a SpatialPolygonsDataFrame of natural ranges for species in x. 
+#' @param range a SpatVector of natural ranges for species in x. 
 #' Must contain a column named as indicated by \code{species}. See details.  
 #' @param species a character string. The column with the species name. 
 #' Default = \dQuote{species}.
 #' @param buffer numerical. The buffer around each species' range,
-#' from where records should be flagged as problematic, in decimal
-#' degrees. Default = 0.
+#' from where records should be flagged as problematic, in meters. Default = 0.
 #' @inheritParams cc_cap
 #' 
 #' @inherit cc_cap return
@@ -28,30 +27,29 @@
 #' @keywords Coordinate cleaning
 #' @family Coordinates
 #' @examples
-#' require(sp)
+#' library(terra)
 #' 
 #' x <- data.frame(species = c("A", "B"),
-#' decimallongitude = runif(100, -170, 170),
-#' decimallatitude = runif(100, -80,80))
+#' decimalLongitude = runif(100, -170, 170),
+#' decimalLatitude = runif(100, -80,80))
 #'
-#' range_species_A <- Polygon(cbind(c(-45,-45,-60,-60,-45),c(-10,-25,-25,-10,-10)))
-#' range_species_B <- Polygon(cbind(c(15,15,32,32,15),c(10,-10,-10,10,10)))
-#' range_A <- Polygons(list(range_species_A), ID = c("A"))
-#' range_B <- Polygons(list(range_species_B), ID = c("B"))
-#' range <- SpatialPolygons(list(range_A, range_B))
-#' df <- data.frame(species = c("A", "B"), row.names = c("A", "B"))
-#' range <- SpatialPolygonsDataFrame(range, data = as.data.frame(df))
+#' range_species_A <- cbind(c(-45,-45,-60,-60,-45), c(-10,-25,-25,-10,-10))
+#' rangeA <- terra::vect(range_species_A, "polygons")
+#' range_species_B <- cbind(c(15,15,32,32,15), c(10,-10,-10,10,10))
+#' rangeB <- terra::vect(range_species_B, "polygons")
+#' range <- terra::vect(list(rangeA, rangeB))
+#' range$binomial <- c("A", "B")
 #'
-#' cc_iucn(x = x, range = range, buffer = 10)
+#' cc_iucn(x = x, range = range, buffer = 0)
 #' 
 #' @export
-#' @importFrom rgeos gBuffer
 #' @importFrom dplyr bind_rows
-#' @importFrom sp CRS over Polygon Polygons proj4string SpatialPoints SpatialPolygons spTransform
+#' @importFrom terra vect buffer extract geomtype subset crs
+
 cc_iucn <- function(x,
                      range,
-                     lon = "decimallongitude", 
-                     lat = "decimallatitude",
+                     lon = "decimalLongitude", 
+                     lat = "decimalLatitude",
                      species = "species",
                      buffer = 0,
                      value = "clean",
@@ -64,46 +62,61 @@ cc_iucn <- function(x,
     message("Testing natural ranges")
   }
   
+  if (any(is(range) == "Spatial")  | inherits(range, "sf")) {
+    range <- terra::vect(range)
+  }
+  # Check if object is a SpatVector 
+  if (!(inherits(range, "SpatVector") & 
+      terra::geomtype(range) == "polygons")) {
+    stop("ref must be a SpatVector with geomtype 'polygons'")
+  }
+  
   # Prepare shape file
   ## Adapt to iucn polygons
-  if("binomial" %in% names(range@data) &
-     !species %in% names(range@data) &
-     species %in% names(x)){
-    names(range@data)[names(range@data) == "binomial"] <- species
+  if("binomial" %in% names(range) &
+     !species %in% names(range) &
+     species %in% names(x)) {
+    names(range)[names(range) == "binomial"] <- species
   }
   
   ## Reduce to species in dataset
-  range <- range[range@data[, species] %in% unique(unlist(x[, species])),]
-  
+  test_range <- range[[species]][, 1] %in% unique(unlist(x[, species]))
+  range <- terra::subset(range, test_range)
   # Split by species
   dat <- data.frame(x, order = rownames(x))
   dat <- split(dat, f = dat[, species])
   
   # Apply buffer to ranges
-  if(buffer != 0){
-    range <-  rgeos::gBuffer(range, byid = TRUE, width = buffer)
+  if (buffer != 0) {
+    range <- terra::buffer(range, width = buffer)
   } 
   
   # Check projection of ranges
   wgs84 <- "+proj=longlat +datum=WGS84 +no_defs"
   
-  if(is.na(sp::proj4string(range))){
+  if (terra::crs(range) == "") {
     warning("no projection information for reference found, 
               assuming '+proj=longlat +datum=WGS84 +no_defs'")
-    sp::proj4string(range) <- sp::CRS(wgs84)
-  }else if(sp::proj4string(range) != wgs84){
-    range <- sp::spTransform(range, sp::CRS(wgs84))
+    terra::crs(range) <- wgs84
+  }else if(terra::crs(range) != terra::crs(wgs84)) {
+    range <- terra::project(range, wgs84)
     warning("reprojecting reference to '+proj=longlat +datum=WGS84 +no_defs'")
   }
   
   # Point-in-polygon-test
   out <- lapply(dat, function(k){
-    if(unique(k[, species]) %in% range@data[, species]){
-      sub <- sp::SpatialPoints(k[, c(lon, lat)], proj4string = sp::CRS(wgs84))
-      range_sub <- range[range@data[, species] == unique(k[, species]),]
-      
+    if (unique(k[, species]) %in% range[[species]][, 1]) {
+      sub <- terra::vect(k[, c(lon, lat)], 
+                         crs = wgs84, 
+                         geom = c(lon, lat))
+      test_range_sub <- range[[species]][, 1] == unique(k[, species])
+      range_sub <- terra::subset(range, test_range_sub)
+      #point in polygon test
+      ext_dat <- terra::extract(range_sub, sub)
+      flag <- !is.na(ext_dat[!duplicated(ext_dat[, 1]), 2])
+
       data.frame(order = k$order,
-                 flag = !is.na(sp::over(x = sub, y = range_sub)[, species]))
+                 flag = flag)
     }else{
       data.frame(order = k$order,
                  flag = TRUE)
@@ -115,8 +128,8 @@ cc_iucn <- function(x,
 
   # Warning for species not in range
   tester <- unique(unlist(x[, species]))
-  if(sum(!tester %in% range@data[, species]) > 0){
-    miss <- tester[!tester %in% range@data[, species]]
+  if(sum(!tester %in% range[[species]][, 1]) > 0){
+    miss <- tester[!tester %in% range[[species]][, 1]]
     warning(sprintf("species not found in range and not tested %s\n", miss))
   }
 
@@ -132,3 +145,4 @@ cc_iucn <- function(x,
   switch(value, clean = return(x[out$flag, ]), 
          flagged = return(out$flag))
 }
+

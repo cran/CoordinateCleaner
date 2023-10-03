@@ -1,5 +1,13 @@
-#' @method is spatialvalid
+#' Check spatialvalid object
+#' 
+#' Test if its argument is a spatialvalid object
+#' 
+#' @param x the object to be tested
+#' @return returns \code{TRUE} if its argument is a spatialvalid
+#' @keywords Check
 #' @export
+
+
 is.spatialvalid <- function(x) {
   inherits(x, "spatialvalid")
 }
@@ -14,10 +22,10 @@ is.spatialvalid <- function(x) {
 #' @param x an object of the class \code{spatialvalid} as from
 #' \code{\link{clean_coordinates}}.
 #' @param lon character string. The column with the longitude coordinates.
-#' Default = \dQuote{decimallongitude}.
+#' Default = \dQuote{decimalLongitude}.
 #' @param lat character string. The column with the latitude coordinates.
-#' Default = \dQuote{decimallatitude}.
-#' @param bgmap an object of the class \code{SpatialPolygonsDataFrame} used as
+#' Default = \dQuote{decimalLatitude}.
+#' @param bgmap an object of the class \code{SpatVector} or \code{sf} used as
 #' background map. Default = ggplot::borders()
 #' @param clean logical.  If TRUE, non-flagged coordinates are included in the
 #' map.
@@ -37,8 +45,8 @@ is.spatialvalid <- function(x) {
 #' 
 #' 
 #' exmpl <- data.frame(species = sample(letters, size = 250, replace = TRUE),
-#'                     decimallongitude = runif(250, min = 42, max = 51),
-#'                     decimallatitude = runif(250, min = -26, max = -11))
+#'                     decimalLongitude = runif(250, min = 42, max = 51),
+#'                     decimalLatitude = runif(250, min = -26, max = -11))
 #' 
 #' test <- clean_coordinates(exmpl, species = "species", 
 #'                           tests = c("sea", "gbif", "zeros"),
@@ -49,11 +57,10 @@ is.spatialvalid <- function(x) {
 #' @export
 #' @method plot spatialvalid
 #' @importFrom grDevices extendrange
-#' @importFrom raster crop
 #' @importFrom ggplot2 borders fortify aes_string geom_polygon coord_fixed map_data theme_bw theme element_text geom_point scale_colour_manual scale_shape_manual element_blank
 plot.spatialvalid <- function(x, 
-                              lon = "decimallongitude",
-                              lat = "decimallatitude",
+                              lon = "decimalLongitude",
+                              lat = "decimalLatitude",
                               bgmap = NULL, 
                               clean = TRUE, 
                               details = FALSE,
@@ -68,30 +75,27 @@ plot.spatialvalid <- function(x,
     plo <- ggplot2::ggplot() + 
       ggplot2::borders(fill = "grey60", 
                        xlim = extendrange(r = range(x[lon]), f = 0.1), 
-                       ylim = extendrange(r = range(x[lat]), f = 0.1))+
+                       ylim = extendrange(r = range(x[lat]), f = 0.1)) +
       ggplot2::coord_fixed() +
       ggplot2::theme_bw()
     
-  }else{
-    bgmap <- suppressWarnings(ggplot2::fortify(bgmap))
+  } else {
+    bgmap <- sf::st_as_sf(bgmap)
+    # bgmap <- suppressWarnings(ggplot2::fortify(bgmap))
     
     plo <- ggplot2::ggplot() + 
-      ggplot2::geom_polygon(data = bgmap, 
-                            ggplot2::aes_string(
-                              x = "long",
-                              y = "lat", group = "group"), 
-                            fill = "grey60") + 
-      ggplot2::coord_fixed() +
+      ggplot2::geom_sf(data = bgmap, 
+                       fill = "grey60") + 
       ggplot2::theme_bw()
     
   }
 
-  # identify failed tests and create flgas column, 
+  # identify failed tests and create flags column, 
   # if multiple failed, first in order
-  inv <- x[, grep("\\.", names(x))]
+  inv <- x[, grep("^\\.", names(x))]
   
   # Sometimes names from gbif have multiple dots
-  inv <- inv[, sapply(inv, "is.logical")]
+  inv <- inv[, sapply(inv, "is.logical"), drop = FALSE]
 
   flgs <- names(inv)[unlist(lapply(apply(inv != 1, 1, "which"), "[", 1), 
                             use.names = FALSE)]
@@ -124,6 +128,11 @@ plot.spatialvalid <- function(x,
 
   if (clean & !details) {
     pts <- x
+    if (all(pts$.summary)) {
+      test_all <- 2
+    } else {
+      test_all <- 1:2
+    }
     plo <- plo + 
       ggplot2::geom_point(data = pts, 
                           ggplot2::aes_string(
@@ -131,8 +140,8 @@ plot.spatialvalid <- function(x,
                             y = lat, 
                             colour = ".summary"), 
                           size = pts_size) + 
-      ggplot2::scale_colour_manual(values = c("#440154FF", "#FDE725FF"), 
-                                   labels = c("Flagged", "Clean")) + 
+      ggplot2::scale_colour_manual(values = c("#440154FF", "#FDE725FF")[test_all], 
+                                   labels = c("Flagged", "Clean")[test_all]) + 
       ggplot2::theme(
       legend.title = ggplot2::element_blank(),
       axis.title = ggplot2::element_text(size = font_size), 

@@ -29,9 +29,9 @@ of records flagged.}
 }
 \value{
 Depending on the \sQuote{value} argument, either a \code{data.frame}
-containing the records considered correct by the test (\dQuote{clean}) or a
-logical vector (\dQuote{flagged}), with TRUE = test passed and FALSE = test failed/potentially
-problematic . Default = \dQuote{clean}.
+  containing the records considered correct by the test (\dQuote{clean}) or a
+  logical vector (\dQuote{flagged}), with TRUE = test passed and FALSE = test
+  failed/potentially problematic . Default = \dQuote{clean}.
 }
 \description{
 Removes or flags records with equal minimum and maximum age.
@@ -57,7 +57,8 @@ cf_equal(x, value = "flagged")
 Other fossils: 
 \code{\link{cf_age}()},
 \code{\link{cf_outl}()},
-\code{\link{cf_range}()}
+\code{\link{cf_range}()},
+\code{\link{write_pyrate}()}
 }
 \concept{fossils}
 \keyword{Fossils}

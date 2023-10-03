@@ -7,8 +7,8 @@
 cc_iucn(
   x,
   range,
-  lon = "decimallongitude",
-  lat = "decimallatitude",
+  lon = "decimalLongitude",
+  lat = "decimalLatitude",
   species = "species",
   buffer = 0,
   value = "clean",
@@ -16,24 +16,22 @@ cc_iucn(
 )
 }
 \arguments{
-\item{x}{data.frame. Containing geographical coordinates and species
-names.}
+\item{x}{data.frame. Containing geographical coordinates and species names.}
 
-\item{range}{a SpatialPolygonsDataFrame of natural ranges for species in x. 
+\item{range}{a SpatVector of natural ranges for species in x. 
 Must contain a column named as indicated by \code{species}. See details.}
 
 \item{lon}{character string. The column with the longitude coordinates.
-Default = \dQuote{decimallongitude}.}
+Default = \dQuote{decimalLongitude}.}
 
 \item{lat}{character string. The column with the latitude coordinates.
-Default = \dQuote{decimallatitude}.}
+Default = \dQuote{decimalLatitude}.}
 
 \item{species}{a character string. The column with the species name. 
 Default = \dQuote{species}.}
 
 \item{buffer}{numerical. The buffer around each species' range,
-from where records should be flagged as problematic, in decimal
-degrees. Default = 0.}
+from where records should be flagged as problematic, in meters. Default = 0.}
 
 \item{value}{character string.  Defining the output value. See value.}
 
@@ -42,9 +40,9 @@ of records flagged.}
 }
 \value{
 Depending on the \sQuote{value} argument, either a \code{data.frame}
-containing the records considered correct by the test (\dQuote{clean}) or a
-logical vector (\dQuote{flagged}), with TRUE = test passed and FALSE = test failed/potentially
-problematic . Default = \dQuote{clean}.
+  containing the records considered correct by the test (\dQuote{clean}) or a
+  logical vector (\dQuote{flagged}), with TRUE = test passed and FALSE = test
+  failed/potentially problematic . Default = \dQuote{clean}.
 }
 \description{
 Removes or flags records outside of the provided natural range polygon, on a per species basis. 
@@ -64,25 +62,25 @@ See \url{https://ropensci.github.io/CoordinateCleaner/} for more
 details and tutorials.
 }
 \examples{
-require(sp)
+library(terra)
 
 x <- data.frame(species = c("A", "B"),
-decimallongitude = runif(100, -170, 170),
-decimallatitude = runif(100, -80,80))
+decimalLongitude = runif(100, -170, 170),
+decimalLatitude = runif(100, -80,80))
 
-range_species_A <- Polygon(cbind(c(-45,-45,-60,-60,-45),c(-10,-25,-25,-10,-10)))
-range_species_B <- Polygon(cbind(c(15,15,32,32,15),c(10,-10,-10,10,10)))
-range_A <- Polygons(list(range_species_A), ID = c("A"))
-range_B <- Polygons(list(range_species_B), ID = c("B"))
-range <- SpatialPolygons(list(range_A, range_B))
-df <- data.frame(species = c("A", "B"), row.names = c("A", "B"))
-range <- SpatialPolygonsDataFrame(range, data = as.data.frame(df))
+range_species_A <- cbind(c(-45,-45,-60,-60,-45), c(-10,-25,-25,-10,-10))
+rangeA <- terra::vect(range_species_A, "polygons")
+range_species_B <- cbind(c(15,15,32,32,15), c(10,-10,-10,10,10))
+rangeB <- terra::vect(range_species_B, "polygons")
+range <- terra::vect(list(rangeA, rangeB))
+range$binomial <- c("A", "B")
 
-cc_iucn(x = x, range = range, buffer = 10)
+cc_iucn(x = x, range = range, buffer = 0)
 
 }
 \seealso{
 Other Coordinates: 
+\code{\link{cc_aohi}()},
 \code{\link{cc_cap}()},
 \code{\link{cc_cen}()},
 \code{\link{cc_coun}()},

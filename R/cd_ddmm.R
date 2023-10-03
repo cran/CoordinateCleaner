@@ -52,8 +52,8 @@
 #' @examples
 #' 
 #' clean <- data.frame(species = letters[1:10], 
-#'                 decimallongitude = runif(100, -180, 180), 
-#'                 decimallatitude = runif(100, -90,90),
+#'                 decimalLongitude = runif(100, -180, 180), 
+#'                 decimalLatitude = runif(100, -90,90),
 #'                 dataset = "FR")
 #'                 
 #' cd_ddmm(x = clean, value = "flagged")
@@ -63,18 +63,19 @@
 #' lat <- sample(0:90, size = 100, replace = TRUE) + runif(100, 0,0.59)
 #' 
 #' prob <-  data.frame(species = letters[1:10], 
-#'                 decimallongitude = lon, 
-#'                 decimallatitude = lat,
+#'                 decimalLongitude = lon, 
+#'                 decimalLatitude = lat,
 #'                 dataset = "FR")
 #'                 
 #' cd_ddmm(x = prob, value = "flagged")
 #' 
 #' @export
 #' @importFrom stats complete.cases binom.test
-#' @importFrom raster plot raster
+#' @importFrom terra plot rast
+
 cd_ddmm <- function(x, 
-                    lon = "decimallongitude", 
-                    lat = "decimallatitude", 
+                    lon = "decimalLongitude", 
+                    lat = "decimalLatitude", 
                     ds = "dataset",
                     pvalue = 0.025, 
                     diff = 1, 
@@ -170,8 +171,8 @@ cd_ddmm <- function(x,
 
       # diagnostic plot of the decimal matrix
       if (diagnostic) {
-        plo <- raster(dat_t1)
-        raster::plot(plo)
+        plo <- terra::rast(dat_t1)
+        terra::plot(plo)
         title(as.logical(flag_t1))
       }
     } else {

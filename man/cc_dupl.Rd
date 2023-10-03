@@ -6,8 +6,8 @@
 \usage{
 cc_dupl(
   x,
-  lon = "decimallongitude",
-  lat = "decimallatitude",
+  lon = "decimalLongitude",
+  lat = "decimalLatitude",
   species = "species",
   additions = NULL,
   value = "clean",
@@ -15,14 +15,13 @@ cc_dupl(
 )
 }
 \arguments{
-\item{x}{data.frame. Containing geographical coordinates and species
-names.}
+\item{x}{data.frame. Containing geographical coordinates and species names.}
 
 \item{lon}{character string. The column with the longitude coordinates.
-Default = \dQuote{decimallongitude}.}
+Default = \dQuote{decimalLongitude}.}
 
 \item{lat}{character string. The column with the latitude coordinates.
-Default = \dQuote{decimallatitude}.}
+Default = \dQuote{decimalLatitude}.}
 
 \item{species}{a character string. The column with the species name. Default
 = \dQuote{species}.}
@@ -38,9 +37,9 @@ of records flagged.}
 }
 \value{
 Depending on the \sQuote{value} argument, either a \code{data.frame}
-containing the records considered correct by the test (\dQuote{clean}) or a
-logical vector (\dQuote{flagged}), with TRUE = test passed and FALSE = test failed/potentially
-problematic . Default = \dQuote{clean}.
+  containing the records considered correct by the test (\dQuote{clean}) or a
+  logical vector (\dQuote{flagged}), with TRUE = test passed and FALSE = test
+  failed/potentially problematic . Default = \dQuote{clean}.
 }
 \description{
 Removes or flags duplicated records based on species name and coordinates, as well as
@@ -52,8 +51,8 @@ flagged with this function, the former given enough additional information.
 \examples{
 
 x <- data.frame(species = letters[1:10], 
-                decimallongitude = sample(x = 0:10, size = 100, replace = TRUE), 
-                decimallatitude = sample(x = 0:10, size = 100, replace = TRUE),
+                decimalLongitude = sample(x = 0:10, size = 100, replace = TRUE), 
+                decimalLatitude = sample(x = 0:10, size = 100, replace = TRUE),
                 collector = "Bonpl",
                 collector.number = c(1001, 354),
                 collection = rep(c("K", "WAG","FR", "P", "S"), 20))
@@ -64,6 +63,7 @@ cc_dupl(x, additions = c("collector", "collector.number"))
 }
 \seealso{
 Other Coordinates: 
+\code{\link{cc_aohi}()},
 \code{\link{cc_cap}()},
 \code{\link{cc_cen}()},
 \code{\link{cc_coun}()},

@@ -6,8 +6,8 @@
 \usage{
 cf_range(
   x,
-  lon = "decimallongitude",
-  lat = "decimallatitude",
+  lon = "decimalLongitude",
+  lat = "decimalLatitude",
   min_age = "min_ma",
   max_age = "max_ma",
   taxon = "accepted_name",
@@ -26,10 +26,10 @@ and geographic coordinates.}
 
 \item{lon}{character string. The column with the longitude coordinates.
 To identify unique records if \code{uniq_loc  = TRUE}.
-Default = \dQuote{decimallongitude}.}
+Default = \dQuote{decimalLongitude}.}
 
 \item{lat}{character string. The column with the longitude coordinates.
-Default = \dQuote{decimallatitude}. To identify unique records if \code{uniq_loc  = T}.}
+Default = \dQuote{decimalLatitude}. To identify unique records if \code{uniq_loc  = T}.}
 
 \item{min_age}{character string. The column with the minimum age. Default
 = \dQuote{min_ma}.}
@@ -66,9 +66,9 @@ of records flagged.}
 }
 \value{
 Depending on the \sQuote{value} argument, either a \code{data.frame}
-containing the records considered correct by the test (\dQuote{clean}) or a
-logical vector (\dQuote{flagged}), with TRUE = test passed and FALSE = test failed/potentially
-problematic . Default = \dQuote{clean}.
+  containing the records considered correct by the test (\dQuote{clean}) or a
+  logical vector (\dQuote{flagged}), with TRUE = test passed and FALSE = test
+  failed/potentially problematic . Default = \dQuote{clean}.
 }
 \description{
 Removes or flags records with an unexpectedly large temporal range, based on a quantile
@@ -94,7 +94,8 @@ cf_range(x, value = "flagged", taxon = "")
 Other fossils: 
 \code{\link{cf_age}()},
 \code{\link{cf_equal}()},
-\code{\link{cf_outl}()}
+\code{\link{cf_outl}()},
+\code{\link{write_pyrate}()}
 }
 \concept{fossils}
 \keyword{Fossil}

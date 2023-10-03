@@ -6,26 +6,25 @@
 \usage{
 cc_zero(
   x,
-  lon = "decimallongitude",
-  lat = "decimallatitude",
+  lon = "decimalLongitude",
+  lat = "decimalLatitude",
   buffer = 0.5,
   value = "clean",
   verbose = TRUE
 )
 }
 \arguments{
-\item{x}{data.frame. Containing geographical coordinates and species
-names.}
+\item{x}{data.frame. Containing geographical coordinates and species names.}
 
 \item{lon}{character string. The column with the longitude coordinates.
-Default = \dQuote{decimallongitude}.}
+Default = \dQuote{decimalLongitude}.}
 
 \item{lat}{character string. The column with the latitude coordinates.
-Default = \dQuote{decimallatitude}.}
+Default = \dQuote{decimalLatitude}.}
 
 \item{buffer}{numerical. The buffer around the 0/0 point,
 where records should be flagged as problematic, in decimal
-degrees.  Default = 0.1.}
+degrees.  Default = 0.5.}
 
 \item{value}{character string.  Defining the output value. See value.}
 
@@ -34,15 +33,15 @@ of records flagged.}
 }
 \value{
 Depending on the \sQuote{value} argument, either a \code{data.frame}
-containing the records considered correct by the test (\dQuote{clean}) or a
-logical vector (\dQuote{flagged}), with TRUE = test passed and FALSE = test failed/potentially
-problematic . Default = \dQuote{clean}.
+  containing the records considered correct by the test (\dQuote{clean}) or a
+  logical vector (\dQuote{flagged}), with TRUE = test passed and FALSE = test
+  failed/potentially problematic . Default = \dQuote{clean}.
 }
 \description{
-Removes or flags records with either zero longitude or latitude and a radius around the
-point at zero longitude and zero latitude. These problems are often due to
-erroneous data-entry or geo-referencing and can lead to typical patterns of
-high diversity around the equator.
+Removes or flags records with either zero longitude or latitude and a radius
+around the point at zero longitude and zero latitude. These problems are
+often due to erroneous data-entry or geo-referencing and can lead to typical
+patterns of high diversity around the equator.
 }
 \note{
 See \url{https://ropensci.github.io/CoordinateCleaner/} for more
@@ -51,8 +50,8 @@ details and tutorials.
 \examples{
 
 x <- data.frame(species = "A", 
-                decimallongitude = c(0,34.84, 0, 33.98), 
-                decimallatitude = c(23.08, 0, 0, 15.98))
+                decimalLongitude = c(0,34.84, 0, 33.98), 
+                decimalLatitude = c(23.08, 0, 0, 15.98))
                 
 cc_zero(x)
 cc_zero(x, value = "flagged")
@@ -60,6 +59,7 @@ cc_zero(x, value = "flagged")
 }
 \seealso{
 Other Coordinates: 
+\code{\link{cc_aohi}()},
 \code{\link{cc_cap}()},
 \code{\link{cc_cen}()},
 \code{\link{cc_coun}()},

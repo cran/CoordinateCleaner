@@ -1,44 +1,44 @@
 #' Identify Records Inside Urban Areas
 #'
-#' Removes or flags records from inside urban areas, based on a geographic gazetteer.
-#' Often records from large databases span substantial time periods (centuries)
-#' and old records might represent habitats which today are replaced by city
-#' area.
+#' Removes or flags records from inside urban areas, based on a geographic
+#' gazetteer. Often records from large databases span substantial time periods
+#' (centuries) and old records might represent habitats which today are replaced
+#' by city area.
 #'
 #'
-#' @param ref a SpatialPolygonsDataFrame. Providing the geographic gazetteer
-#' with the urban areas. See details. By default 
-#' rnaturalearth::ne_download(scale = 'medium', type = 'urban_areas').
-#' Can be any \code{SpatialPolygonsDataframe}, but the structure must be
-#' identical to \code{rnaturalearth::ne_download()}.
+#' @param ref a SpatVector. Providing the geographic gazetteer
+#'   with the urban areas. See details. By default
+#'   rnaturalearth::ne_download(scale = 'medium', type = 'urban_areas',
+#'   returnclass = "sf"). Can be any \code{SpatVector}, but the
+#'   structure must be identical to \code{rnaturalearth::ne_download()}.
 #' @inheritParams cc_cap
-#' 
+#'
 #' @inherit cc_cap return
-#' 
+#'
 #' @note See \url{https://ropensci.github.io/CoordinateCleaner/} for more
-#' details and tutorials.
-#' 
+#'   details and tutorials.
+#'
 #' @keywords Coordinate cleaning
 #' @family Coordinates
-#' 
+#'
 #' @examples
 #'
 #' \dontrun{
 #' x <- data.frame(species = letters[1:10],
-#'                 decimallongitude = runif(100, -180, 180),
-#'                 decimallatitude = runif(100, -90,90))
+#'                 decimalLongitude = runif(100, -180, 180),
+#'                 decimalLatitude = runif(100, -90,90))
 #'
 #' cc_urb(x)
 #' cc_urb(x, value = "flagged")
 #' }
 #'
 #' @export
-#' @importFrom sp CRS SpatialPoints "proj4string<-" over proj4string
-#' @importFrom raster extent crop
+#' @importFrom terra vect crop project extract
 #' @importFrom rnaturalearth ne_download ne_file_name
+
 cc_urb <- function(x,
-                   lon = "decimallongitude",
-                   lat = "decimallatitude",
+                   lon = "decimalLongitude",
+                   lat = "decimalLatitude",
                    ref = NULL,
                    value = "clean",
                    verbose = TRUE) {
@@ -53,11 +53,15 @@ cc_urb <- function(x,
   # check for reference data. 
   if (is.null(ref)) {
     message("Downloading urban areas via rnaturalearth")
-    ref <- try(suppressWarnings(rnaturalearth::ne_download(scale = 'medium', 
-                                                           type = 'urban_areas')), 
-               silent = TRUE)
+    ref <-
+      try(suppressWarnings(terra::vect(
+        rnaturalearth::ne_download(scale = 'medium',
+                                   type = 'urban_areas',
+                                   returnclass = "sf")
+      )),
+      silent = TRUE)
     
-    if(class(ref) == "try-error"){
+    if (inherits(ref, "try-error")) {
       warning(sprintf("Gazetteer for urban areas not found at\n%s",
                       rnaturalearth::ne_file_name(scale = 'medium',
                                                   type = 'urban_areas',
@@ -66,11 +70,15 @@ cc_urb <- function(x,
       switch(value, clean = return(x), flagged = return(rep(NA, nrow(x))))
     }
 
-    sp::proj4string(ref) <- ""
   } else {
-    #Enable sf formatted custom references
-    if(!any(is(ref) == "Spatial")){
-      ref <- as(ref, "Spatial")
+    # Enable sf formatted custom references
+    if (any(is(ref) == c("Spatial"))  | inherits(ref, "sf")) {
+      ref <- terra::vect(ref)
+    }
+    # Check if object is a SpatVector 
+    if (!(inherits(ref, "SpatVector") & 
+        terra::geomtype(ref) == "polygons")) {
+      stop("ref must be a SpatVector with geomtype 'polygons'")
     }
     ref <- reproj(ref)
   }
@@ -78,21 +86,25 @@ cc_urb <- function(x,
   # Prepare input points and extent
   wgs84 <- "+proj=longlat +datum=WGS84 +no_defs"
 
-  dat <- sp::SpatialPoints(x[, c(lon, lat)], proj4string = CRS(wgs84))
-  limits <- raster::extent(dat) + 1
-  ref <- raster::crop(ref, limits)
-  proj4string(ref) <- wgs84
+  dat <- terra::vect(x[, c(lon, lat)],
+                     geom = c(lon, lat),
+                     crs = wgs84)
+  limits <- terra::ext(dat) + 1
+  ref <- terra::crop(ref, limits)
+  ref <- terra::project(ref, wgs84)
   
-  # test if any points fall within the buffer incase no urban areas are found in
-  # the study area
+  # test if any points fall within the buffer in case no urban areas are found
+  # in the study area
   if (is.null(ref)) {
     out <- rep(TRUE, nrow(x))
   } else {
-    out <- is.na(sp::over(x = dat, y = ref)[, 1])
+    #point in polygon test
+    ext_dat <- terra::extract(ref, dat)
+    out <- is.na(ext_dat[!duplicated(ext_dat[, 1]), 2])
   }
 
   if (verbose) {
-    if(value == "clean"){
+    if (value == "clean") {
       message(sprintf("Removed %s records.", sum(!out)))
     }else{
       message(sprintf("Flagged %s records.", sum(!out)))
